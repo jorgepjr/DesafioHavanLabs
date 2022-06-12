@@ -12,12 +12,14 @@ namespace WebApi.Controllers
     [Route("[controller]")]
     public class ClienteController : ControllerBase
     {
+        private readonly BuscarClientePorDocumento buscarClientePorDocumento;
         private readonly CadastrarCliente cadastrarCliente;
         private readonly ExcluirCliente excluirCliente;
         private readonly BuscarEndereco buscarEndereco;
 
         public ClienteController(IPersistenciaDoCliente persistenciaDoCliente, IApiViaCep apiViaCep)
         {
+            this.buscarClientePorDocumento = new BuscarClientePorDocumento(persistenciaDoCliente);
             this.cadastrarCliente = new CadastrarCliente(persistenciaDoCliente);
             this.excluirCliente = new ExcluirCliente(persistenciaDoCliente);
             this.buscarEndereco = new BuscarEndereco(apiViaCep);
@@ -38,11 +40,7 @@ namespace WebApi.Controllers
                 return BadRequest(cadastrarCliente.Erros.First().Value);
             }
 
-            var endereco = await buscarEndereco.Executar(clienteDto.Cep);
-
-            var cliente = new {dadosDoCliente = clienteDto, endereco };
-
-            return Ok(cliente);
+            return Ok("Cliente cadastrado com sucesso!");
         }
 
         [HttpDelete]
@@ -61,6 +59,23 @@ namespace WebApi.Controllers
             }
 
             return Ok($"ClienteId: {clienteId} foi excluído com sucesso!");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get(string documento)
+        {
+            var cliente = await buscarClientePorDocumento.Executar(documento);
+
+            if (buscarClientePorDocumento.Erros.Any())
+            {
+                return BadRequest(buscarClientePorDocumento.Erros.First().Value);
+            }
+
+            var endereco = await buscarEndereco.Executar(cliente.Cep);
+
+            var informacoesDoCliente = new { cliente, endereco };
+
+            return  Ok(informacoesDoCliente);
         }
     }
 }

@@ -9,6 +9,7 @@ namespace Adaptadores.Interfaces
 
         Task Excluir(Cliente cliente);
         Task<Cliente> BuscarPorId(int id);
+        Task<Cliente> BuscarPorDocumento(string documento);
         Task<bool> JaPossuiCadastro(string documento);
     }
 }

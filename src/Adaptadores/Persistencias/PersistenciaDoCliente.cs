@@ -1,7 +1,6 @@
 ﻿using Adaptadores.Interfaces;
 using Dominio;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Adaptadores.Persistencias
@@ -37,6 +36,11 @@ namespace Adaptadores.Persistencias
         public async Task<Cliente> BuscarPorId(int id)
         {
             return await db.Clientes.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<Cliente> BuscarPorDocumento(string documento)
+        {
+            return await db.Clientes.FirstOrDefaultAsync(x=>x.Documento == documento);
         }
     }
 }
