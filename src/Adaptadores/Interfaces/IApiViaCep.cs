@@ -7,6 +7,6 @@ namespace Adaptadores.Interfaces
     public interface IApiViaCep
     {
         [Get("/{cep}/json")]
-        Task<EnderecoDto> BuscarEnderecoViaCep(string cep);
+        Task<EnderecoDto> BuscarEndereco(string cep);
     }
 }
