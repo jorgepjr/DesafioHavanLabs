@@ -3,7 +3,6 @@ using Adaptadores.Interfaces;
 using CasosDeUso.Clientes;
 using CasosDeUso.Enderecos;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,6 +28,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
+        [Route("Criar")]
         public async Task<IActionResult> Post(ClienteDto clienteDto)
         {
             if (!ModelState.IsValid)
@@ -47,6 +47,7 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete]
+        [Route("Excluir/{clienteId}")]
         public async Task<IActionResult> Post(int? clienteId)
         {
             if (clienteId is null)
@@ -65,6 +66,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [Route("Buscar/{documento}")]
         public async Task<IActionResult> Get(string documento)
         {
             var cliente = await buscarClientePorDocumento.Executar(documento);
@@ -82,6 +84,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut]
+        [Route("Editar/{clienteId}")]
         public async Task<IActionResult> Put(ClienteDto clienteDto, int clienteId)
         {
 
