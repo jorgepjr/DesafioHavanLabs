@@ -3,6 +3,7 @@ using Adaptadores.Interfaces;
 using CasosDeUso.Clientes;
 using CasosDeUso.Enderecos;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,6 +17,7 @@ namespace WebApi.Controllers
         private readonly CadastrarCliente cadastrarCliente;
         private readonly ExcluirCliente excluirCliente;
         private readonly BuscarEndereco buscarEndereco;
+        private readonly AtualizarCliente atualizarCliente;
 
         public ClienteController(IPersistenciaDoCliente persistenciaDoCliente, IApiViaCep apiViaCep)
         {
@@ -23,6 +25,7 @@ namespace WebApi.Controllers
             this.cadastrarCliente = new CadastrarCliente(persistenciaDoCliente);
             this.excluirCliente = new ExcluirCliente(persistenciaDoCliente);
             this.buscarEndereco = new BuscarEndereco(apiViaCep);
+            this.atualizarCliente = new AtualizarCliente(persistenciaDoCliente);
         }
 
         [HttpPost]
@@ -75,7 +78,26 @@ namespace WebApi.Controllers
 
             var informacoesDoCliente = new { cliente, endereco };
 
-            return  Ok(informacoesDoCliente);
+            return Ok(informacoesDoCliente);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Put(ClienteDto clienteDto, int clienteId)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(clienteDto);
+            }
+
+            await atualizarCliente.Executar(clienteDto, clienteId);
+
+            if (atualizarCliente.Erros.Any())
+            {
+              return BadRequest(atualizarCliente.Erros.First().Value);
+            }
+
+            return Ok("Ação realizada com sucesso!");
         }
     }
 }

@@ -26,7 +26,7 @@ namespace CasosDeUso.Clientes
                 return;
             }
 
-            await persistenciaDoCliente.Cadastrar(cliente);
+            await persistenciaDoCliente.Salvar(cliente);
         }
     }
 }

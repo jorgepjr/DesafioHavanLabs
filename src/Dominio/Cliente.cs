@@ -1,4 +1,6 @@
-﻿namespace Dominio
+﻿using System;
+
+namespace Dominio
 {
     public class Cliente
     {
@@ -15,5 +17,13 @@
         public string Nome { get; private set; }
         public string Documento { get; private set; }
         public string Cep { get; private set; }
+
+        public void AtualizarInformacoes(string nome, string documento, string cep)
+        {
+            Nome = nome;
+            Documento = documento;
+            Cep = cep;
+                
+        }
     }
 }
