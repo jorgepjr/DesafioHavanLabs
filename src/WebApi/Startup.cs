@@ -34,7 +34,10 @@ namespace WebApi
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "API Vendas", Version = "v1" });
             });
 
-            services.AddDbContext<Contexto>(x=>x.UseInMemoryDatabase("Memo"));
+            //services.AddDbContext<Contexto>(x => x.UseInMemoryDatabase("Memo"));
+
+            services.AddDbContext<Contexto>(x => x.UseNpgsql(Configuration.GetConnectionString("Contexto"), x => x.MigrationsAssembly("WebApi")));
+
             //Refit
             services.AddRefitClient<IApiViaCep>()
                 .ConfigureHttpClient(c => c.BaseAddress = new Uri(Configuration["UrlViaCep"]));

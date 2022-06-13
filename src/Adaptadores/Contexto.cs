@@ -11,5 +11,7 @@ namespace Adaptadores
 
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Produto> Produtos { get; set; }
+        public DbSet<PreVenda> PreVendas { get; set; }
+        public DbSet<ItemPreVenda> ItensPreVenda { get; set; }
     }
 }

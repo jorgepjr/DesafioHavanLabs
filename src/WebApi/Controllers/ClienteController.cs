@@ -43,7 +43,11 @@ namespace WebApi.Controllers
                 return BadRequest(cadastrarCliente.Erros.First().Value);
             }
 
-            return Ok("Cliente cadastrado com sucesso!");
+            var endereco = await buscarEndereco.Executar(clienteDto.Cep);
+
+            var informacoesDoCliente = new { clienteDto, endereco };
+
+            return Ok(informacoesDoCliente);
         }
 
         [HttpDelete]
@@ -97,7 +101,7 @@ namespace WebApi.Controllers
 
             if (atualizarCliente.Erros.Any())
             {
-              return BadRequest(atualizarCliente.Erros.First().Value);
+                return BadRequest(atualizarCliente.Erros.First().Value);
             }
 
             return Ok("Ação realizada com sucesso!");
