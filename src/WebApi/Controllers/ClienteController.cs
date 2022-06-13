@@ -15,16 +15,16 @@ namespace WebApi.Controllers
         private readonly BuscarClientePorDocumento buscarClientePorDocumento;
         private readonly CadastrarCliente cadastrarCliente;
         private readonly ExcluirCliente excluirCliente;
-        private readonly BuscarEndereco buscarEndereco;
         private readonly AtualizarCliente atualizarCliente;
+        private readonly BuscarEndereco buscarEndereco;
 
         public ClienteController(IPersistenciaDoCliente persistenciaDoCliente, IApiViaCep apiViaCep)
         {
             this.buscarClientePorDocumento = new BuscarClientePorDocumento(persistenciaDoCliente);
             this.cadastrarCliente = new CadastrarCliente(persistenciaDoCliente);
             this.excluirCliente = new ExcluirCliente(persistenciaDoCliente);
-            this.buscarEndereco = new BuscarEndereco(apiViaCep);
             this.atualizarCliente = new AtualizarCliente(persistenciaDoCliente);
+            this.buscarEndereco = new BuscarEndereco(apiViaCep);
         }
 
         [HttpPost]

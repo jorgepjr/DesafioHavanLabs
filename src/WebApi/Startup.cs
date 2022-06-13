@@ -42,6 +42,7 @@ namespace WebApi
 
             //Persistencias
             services.AddScoped<IPersistenciaDoCliente, PersistenciaDoCliente>();
+            services.AddScoped<IPersistenciaDoProduto, PersistenciaDoProduto>();
 
         }
 
