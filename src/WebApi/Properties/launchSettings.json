@@ -14,9 +14,7 @@
       "launchBrowser": true,
       "launchUrl": "documentacao",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-
-        "UrlViaCep": "https://viacep.com.br/ws"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "WebApi": {
