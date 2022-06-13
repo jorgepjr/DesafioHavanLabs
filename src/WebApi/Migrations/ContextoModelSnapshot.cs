@@ -107,6 +107,9 @@ namespace WebApi.Migrations
                     b.Property<decimal>("Preco")
                         .HasColumnType("numeric");
 
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.ToTable("Produtos");

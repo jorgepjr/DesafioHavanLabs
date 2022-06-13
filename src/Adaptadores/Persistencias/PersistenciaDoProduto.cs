@@ -28,7 +28,7 @@ namespace Adaptadores.Persistencias
 
         public async Task<Produto> BuscarPorCodigo(string codigo)
         {
-            var resultado = await db.Produtos.FirstOrDefaultAsync(x => x.Codigo == codigo);
+            var resultado = await db.Produtos.AsNoTracking().FirstOrDefaultAsync(x => x.Codigo == codigo);
 
             return resultado;
         }

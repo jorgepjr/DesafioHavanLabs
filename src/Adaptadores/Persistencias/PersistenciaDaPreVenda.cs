@@ -15,7 +15,7 @@ namespace Adaptadores.Persistencias
 
         public async Task Criar(PreVenda preVenda)
         {
-            await db.AddAsync(preVenda);
+            await db.PreVendas.AddAsync(preVenda);
             await db.SaveChangesAsync();
         }
     }

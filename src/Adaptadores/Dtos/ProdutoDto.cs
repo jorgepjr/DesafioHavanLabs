@@ -12,5 +12,8 @@ namespace Adaptadores.Dtos
 
         [Required(ErrorMessage = "Campo {0} é obrigatório")]
         public decimal Preco { get; set; }
+
+        [Required(ErrorMessage = "Campo {0} é obrigatório")]
+        public int Quantidade { get; set; }
     }
 }

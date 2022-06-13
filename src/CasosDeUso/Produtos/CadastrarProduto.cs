@@ -16,7 +16,7 @@ namespace CasosDeUso.Produtos
 
         public async Task Executar(ProdutoDto produtoDto)
         {
-            var produto = new Produto(produtoDto.Nome, produtoDto.Codigo, produtoDto.Preco);
+            var produto = new Produto(produtoDto.Nome, produtoDto.Codigo, produtoDto.Preco, produtoDto.Quantidade);
 
             var resultado = await persistenciaDoProduto.BuscarPorCodigo(produtoDto.Codigo);
 

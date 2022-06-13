@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20220613032911_Int")]
-    partial class Int
+    [Migration("20220613133828_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -108,6 +108,9 @@ namespace WebApi.Migrations
 
                     b.Property<decimal>("Preco")
                         .HasColumnType("numeric");
+
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

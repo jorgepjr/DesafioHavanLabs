@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace WebApi.Migrations
 {
-    public partial class Int : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -31,7 +31,8 @@ namespace WebApi.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Nome = table.Column<string>(nullable: true),
                     Codigo = table.Column<string>(nullable: true),
-                    Preco = table.Column<decimal>(nullable: false)
+                    Preco = table.Column<decimal>(nullable: false),
+                    Quantidade = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

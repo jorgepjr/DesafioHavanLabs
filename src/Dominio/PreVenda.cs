@@ -7,16 +7,17 @@ namespace Dominio
     {
         protected PreVenda() { }
 
-        public PreVenda(Cliente cliente)
+        public PreVenda(int clienteId)
         {
-            Cliente = cliente;
+            ClienteId = clienteId;
             DataDeRegistro = DateTime.Now.Date;
         }
 
         public int Id { get; private set; }
-        public Cliente Cliente { get; private set; }
+        public int ClienteId { get; set; }
         public List<ItemPreVenda> Itens { get; private set; } = new List<ItemPreVenda>();
         public DateTime DataDeRegistro { get; private set; }
+        public Cliente Cliente { get; private set; }
 
         public void AdicionarItens(ItemPreVenda itemPreVenda)
         {
