@@ -22,7 +22,7 @@ namespace CasosDeUso.Enderecos
             {
                 enderecoDto = await apiViaCep.BuscarEndereco(cep);
 
-                if(enderecoDto is null)
+                if(enderecoDto.Cep is null)
                 {
                     Erros.Add("Erro", "Endereço não encontrado!");
                     return null;
@@ -30,7 +30,7 @@ namespace CasosDeUso.Enderecos
             }
             catch (ApiException ex)
             {
-                Erros.Add(ex.StatusCode.ToString(), ex.Message);
+                Erros.Add("BadRequest", "Cep inválido!");
                 return null;
             }
 
