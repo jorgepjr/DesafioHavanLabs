@@ -17,7 +17,7 @@ namespace WebApi.Factories
             {
                 Cliente = cliente,
                 Itens = itens,
-                Total = itens.Sum(x=>x.PrecoUnitario)
+                Total = itens.Sum(x=>x.PrecoUnitario * x.Quantidade)
                 
             };
         }
