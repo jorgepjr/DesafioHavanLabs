@@ -35,13 +35,13 @@ namespace CasosDeUso.Vendas
                     await AtualizarEstoque(item.Quantidade, produto);
                 }
 
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    Erros.Add("Erro estoque", ex.Message);
+                    Erros.Add("Erro estoque", $"Produto: [{produto.Nome}] indisponível!");
                     return null;
                 }
 
-                var itemPrevenda = new ItemPreVenda(produto.Id, item.Quantidade, produto.Preco);
+                var itemPrevenda = new ItemPreVenda(produto, item.Quantidade, produto.Preco);
                 preVenda.AdicionarItens(itemPrevenda);
             }
 

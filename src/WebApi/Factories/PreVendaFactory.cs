@@ -1,9 +1,7 @@
 ﻿using Adaptadores.Dtos;
 using Dominio;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebApi.Factories
 {
@@ -17,8 +15,7 @@ namespace WebApi.Factories
             {
                 Cliente = cliente,
                 Itens = itens,
-                Total = itens.Sum(x=>x.PrecoUnitario * x.Quantidade)
-                
+                Total = preVenda.CalcularTotal()
             };
         }
 
@@ -26,7 +23,7 @@ namespace WebApi.Factories
         {
             return itens.Select(x => new ItemVendaDto
             {
-                CodigoDoProduto = x.Produto.Codigo,
+                CodigoDoProduto = x.Produto?.Codigo,
                 Quantidade = x.Quantidade,
                 PrecoUnitario =  x.PrecoUnitario
 

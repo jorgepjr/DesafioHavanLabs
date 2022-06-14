@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Dominio
 {
@@ -22,6 +23,11 @@ namespace Dominio
         public void AdicionarItens(ItemPreVenda itemPreVenda)
         {
             Itens.Add(itemPreVenda);
+        }
+
+        public decimal CalcularTotal()
+        {
+           return Itens.Sum(x => x.PrecoUnitario * x.Quantidade);
         }
     }
 }

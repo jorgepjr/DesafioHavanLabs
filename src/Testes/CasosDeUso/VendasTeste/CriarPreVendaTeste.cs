@@ -93,7 +93,7 @@ namespace Testes.CasosDeUso.VendasTeste
             //Action
             await criarPreVenda.Executar(preVendaDto, clienteId);
 
-            Assert.Equal("Produto indisponível!", criarPreVenda.Erros.First().Value);
+            Assert.Equal($"Produto: [{produto.Nome}] indisponível!", criarPreVenda.Erros.First().Value);
         }
     }
 }
