@@ -12,5 +12,13 @@ namespace Testes.Mocks
 
             return persistenciaDoProduto;
         }
+
+        public static Mock<IPersistenciaDoCliente> BuscarClientePorIdMock()
+        {
+            var persistenciaDoCliente = new Mock<IPersistenciaDoCliente>();
+            persistenciaDoCliente.Setup(x => x.BuscarPorId(It.IsAny<int>())).ReturnsAsync(ModelsMock.ClienteMock);
+
+            return persistenciaDoCliente;
+        }
     }
 }
