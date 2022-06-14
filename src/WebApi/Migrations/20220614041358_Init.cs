@@ -32,7 +32,7 @@ namespace WebApi.Migrations
                     Nome = table.Column<string>(nullable: true),
                     Codigo = table.Column<string>(nullable: true),
                     Preco = table.Column<decimal>(nullable: false),
-                    Quantidade = table.Column<int>(nullable: false)
+                    Estoque = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,7 +45,7 @@ namespace WebApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ClienteId = table.Column<int>(nullable: true),
+                    ClienteId = table.Column<int>(nullable: false),
                     DataDeRegistro = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -56,7 +56,7 @@ namespace WebApi.Migrations
                         column: x => x.ClienteId,
                         principalTable: "Clientes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -65,10 +65,9 @@ namespace WebApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ProdutoId = table.Column<int>(nullable: true),
+                    ProdutoId = table.Column<int>(nullable: false),
                     Quantidade = table.Column<int>(nullable: false),
                     PrecoUnitario = table.Column<decimal>(nullable: false),
-                    Total = table.Column<decimal>(nullable: false),
                     PreVendaId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -85,7 +84,7 @@ namespace WebApi.Migrations
                         column: x => x.ProdutoId,
                         principalTable: "Produtos",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

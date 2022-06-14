@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20220613133828_Init")]
+    [Migration("20220614041358_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,14 +55,11 @@ namespace WebApi.Migrations
                     b.Property<decimal>("PrecoUnitario")
                         .HasColumnType("numeric");
 
-                    b.Property<int?>("ProdutoId")
+                    b.Property<int>("ProdutoId")
                         .HasColumnType("integer");
 
                     b.Property<int>("Quantidade")
                         .HasColumnType("integer");
-
-                    b.Property<decimal>("Total")
-                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
@@ -80,7 +77,7 @@ namespace WebApi.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("ClienteId")
+                    b.Property<int>("ClienteId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("DataDeRegistro")
@@ -103,14 +100,14 @@ namespace WebApi.Migrations
                     b.Property<string>("Codigo")
                         .HasColumnType("text");
 
+                    b.Property<int>("Estoque")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Nome")
                         .HasColumnType("text");
 
                     b.Property<decimal>("Preco")
                         .HasColumnType("numeric");
-
-                    b.Property<int>("Quantidade")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -125,14 +122,18 @@ namespace WebApi.Migrations
 
                     b.HasOne("Dominio.Produto", "Produto")
                         .WithMany()
-                        .HasForeignKey("ProdutoId");
+                        .HasForeignKey("ProdutoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Dominio.PreVenda", b =>
                 {
                     b.HasOne("Dominio.Cliente", "Cliente")
                         .WithMany()
-                        .HasForeignKey("ClienteId");
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
