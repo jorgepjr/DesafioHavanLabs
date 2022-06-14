@@ -18,7 +18,7 @@ namespace CasosDeUso.Produtos
 
             if(produto is null)
             {
-                Erros.Add("Erro", "Cliente não encontrado!");
+                Erros.Add("Erro", "Produto não encontrado!");
                 return;
             }
 

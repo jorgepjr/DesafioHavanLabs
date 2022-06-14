@@ -23,7 +23,6 @@ namespace Dominio
             Nome = nome;
             Documento = documento;
             Cep = cep;
-                
         }
     }
 }

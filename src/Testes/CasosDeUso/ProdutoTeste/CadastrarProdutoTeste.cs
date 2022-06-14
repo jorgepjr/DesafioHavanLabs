@@ -23,22 +23,27 @@ namespace Testes.CasosDeUso.ProdutoTeste
         [Fact]
         public async Task DeveCadastrarProduto()
         {
+            //Arrange
             var cadastrarProduto = new CadastrarProduto(persistenciaDoProduto.Object);
 
+            //Action
             await cadastrarProduto.Executar(produtoDto);
 
+            //Assert
             persistenciaDoProduto.Verify(x => x.Salvar(It.IsAny<Produto>()), Times.Once());
         }
 
         [Fact]
         public async Task DeveRetornarErroCasoCodigoDoProdutoJaCadastrado()
         {
+            //Arrange
             persistenciaDoProduto.Setup(x => x.BuscarPorCodigo(It.IsAny<string>())).ReturnsAsync(ModelsMock.ProdutoMock);
-
             var cadastrarProduto = new CadastrarProduto(persistenciaDoProduto.Object);
 
+            //Action
             await cadastrarProduto.Executar(produtoDto);
 
+            //Assert
             Assert.Equal("Codigo: 123 já cadastrado!", cadastrarProduto.Erros.First().Value);
         }
     }

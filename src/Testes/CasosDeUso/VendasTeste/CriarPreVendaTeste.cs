@@ -4,6 +4,7 @@ using CasosDeUso.Vendas;
 using Dominio;
 using Moq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Testes.Mocks;
 using Xunit;
@@ -57,7 +58,7 @@ namespace Testes.CasosDeUso.VendasTeste
             await criarPreVenda.Executar(preVendaDto, clienteId);
 
             //Assert
-            Assert.Equal(estoque, produto.Quantidade);
+            Assert.Equal(estoque, produto.Estoque);
         }
 
         [Fact]
@@ -76,7 +77,23 @@ namespace Testes.CasosDeUso.VendasTeste
             await criarPreVenda.Executar(preVendaDto, clienteId);
 
             //Assert
-            Assert.Equal(estoque, produto.Quantidade);
+            Assert.Equal(estoque, produto.Estoque);
+        }
+
+        [Fact]
+        public async Task DeveRetornarErroCasoEstoqueTenhaAcabado()
+        {
+            var clienteId = 45;
+           
+            var itemDaPreVendaDto = new ItemPreVendaDto { CodigoDoProduto = "2", Quantidade = 15 };
+            var itens = new List<ItemPreVendaDto> { itemDaPreVendaDto };
+            var preVendaDto = new PreVendaDto { DocumentoDoCliente = "44445055", Itens = itens };
+            var criarPreVenda = new CriarPreVenda(persistenciaDaPreVenda.Object, persistenciaDoProduto.Object);
+
+            //Action
+            await criarPreVenda.Executar(preVendaDto, clienteId);
+
+            Assert.Equal("Produto indisponível!", criarPreVenda.Erros.First().Value);
         }
     }
 }

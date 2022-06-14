@@ -6,19 +6,19 @@ namespace Dominio
     {
         protected Produto() { }
 
-        public Produto(string nome, string codigo, decimal preco, int quantidade)
+        public Produto(string nome, string codigo, decimal preco, int estoque)
         {
             Nome = nome;
             Codigo = codigo;
             Preco = preco;
-            Quantidade = quantidade;
+            Estoque = estoque;
         }
 
         public int Id { get; private set; }
         public string Nome { get; private set; }
         public string Codigo { get; private set; }
         public decimal Preco { get; private set; }
-        public int Quantidade { get; private set; }
+        public int Estoque { get; private set; }
 
         public void AtualizarInformacoes(string codigo, string nome, decimal preco)
         {
@@ -29,12 +29,12 @@ namespace Dominio
 
         public void Subtrair(int quantidade)
         {
-            if (Quantidade == 0 || Quantidade < quantidade)
+            if (Estoque == 0 || Estoque < quantidade)
             {
                 throw new Exception("Produto indisponível!");
             }
 
-            Quantidade -= quantidade;
+            Estoque -= quantidade;
         }
     }
 }

@@ -33,8 +33,8 @@ namespace CasosDeUso.Vendas
                 try
                 {
                     await AtualizarEstoque(item.Quantidade, produto);
-
                 }
+
                 catch (Exception ex)
                 {
                     Erros.Add("Erro estoque", ex.Message);
