@@ -1,3 +1,5 @@
+using System;
+
 namespace Dominio
 {
     public class Produto
@@ -27,9 +29,12 @@ namespace Dominio
 
         public void Subtrair(int quantidade)
         {
-            if (Quantidade >= quantidade)
+            if (Quantidade == 0 || Quantidade < quantidade)
+            {
+                throw new Exception("Produto indisponível!");
+            }
 
-                Quantidade -= quantidade;
+            Quantidade -= quantidade;
         }
     }
 }

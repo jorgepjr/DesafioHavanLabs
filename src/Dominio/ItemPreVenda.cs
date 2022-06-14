@@ -4,12 +4,11 @@
     {
         protected ItemPreVenda() { }
 
-        public ItemPreVenda(int produtoId, int quantidade, decimal precoUnitario, decimal total)
+        public ItemPreVenda(int produtoId, int quantidade, decimal precoUnitario)
         {
             ProdutoId = produtoId;
             Quantidade = quantidade;
             PrecoUnitario = precoUnitario;
-            Total = total;
         }
 
         public int Id { get; private set; }

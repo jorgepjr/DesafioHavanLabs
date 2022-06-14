@@ -1,44 +1,59 @@
 ﻿using Adaptadores.Dtos;
 using Adaptadores.Interfaces;
 using Dominio;
+using System;
 using System.Threading.Tasks;
 
 namespace CasosDeUso.Vendas
 {
-    public class CriarPreVenda
+    public class CriarPreVenda : CasoDeUsoBase
     {
         private readonly IPersistenciaDaPreVenda persistenciaDaPreVenda;
-        private readonly IPersistenciaDoCliente persistenciaDoCliente;
         private readonly IPersistenciaDoProduto persistenciaDoProduto;
 
-        public CriarPreVenda(IPersistenciaDaPreVenda persistenciaDaPreVenda, IPersistenciaDoCliente persistenciaDoCliente, IPersistenciaDoProduto persistenciaDoProduto)
+        public CriarPreVenda(IPersistenciaDaPreVenda persistenciaDaPreVenda, IPersistenciaDoProduto persistenciaDoProduto)
         {
             this.persistenciaDaPreVenda = persistenciaDaPreVenda;
-            this.persistenciaDoCliente = persistenciaDoCliente;
             this.persistenciaDoProduto = persistenciaDoProduto;
         }
 
-        public async Task Executar(PreVendaDto preVendaDto)
+        public async Task<PreVenda> Executar(PreVendaDto preVendaDto, int? clienteId)
         {
-            var cliente = await persistenciaDoCliente.BuscarPorDocumento(preVendaDto.DocumentoDoCliente);
+            if (clienteId is null)
+            {
+                Erros.Add("Erro", "ClienteId inválido!");
+            }
 
-            var preVenda = new PreVenda(cliente.Id);
+            var preVenda = new PreVenda(clienteId.Value);
 
             foreach (var item in preVendaDto.Itens)
             {
                 var produto = await persistenciaDoProduto.BuscarPorCodigo(item.CodigoDoProduto);
 
-                produto.Subtrair(item.Quantidade);
-                await persistenciaDoProduto.Atualizar(produto);
+                try
+                {
+                    await AtualizarEstoque(item.Quantidade, produto);
 
-                var total = item.Quantidade * produto.Preco;
+                }
+                catch (Exception ex)
+                {
+                    Erros.Add("Erro estoque", ex.Message);
+                    return null;
+                }
 
-                var itemPrevenda = new ItemPreVenda(produto.Id, item.Quantidade, produto.Preco, total);
-
+                var itemPrevenda = new ItemPreVenda(produto.Id, item.Quantidade, produto.Preco);
                 preVenda.AdicionarItens(itemPrevenda);
             }
 
             await persistenciaDaPreVenda.Criar(preVenda);
+
+            return preVenda;
+        }
+
+        private async Task AtualizarEstoque(int quantidade, Produto produto)
+        {
+            produto.Subtrair(quantidade);
+            await persistenciaDoProduto.Atualizar(produto);
         }
     }
 }
