@@ -14,7 +14,7 @@ namespace Testes.Mocks
         public static Cliente ClienteMock => new Cliente("Joao", "87755566644", "76806534");
 
         public static ClienteDto ClienteDtoMock => new ClienteDto { Cep = "76806534", Documento = "89966654536", Nome = "Pedro" };
-        public static AtualizarClienteDto AtualizarClienteDtoMock => new AtualizarClienteDto {ClienteId = 2, Cep = "76806534", Documento = "89966654536", Nome = "Pedro" };
+        public static AtualizarClienteDto AtualizarClienteDtoMock => new AtualizarClienteDto {ClienteId = 2, Cep = "76806534", Nome = "Pedro" };
 
     }
 }

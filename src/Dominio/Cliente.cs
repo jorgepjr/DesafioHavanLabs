@@ -18,10 +18,9 @@ namespace Dominio
         public string Documento { get; private set; }
         public string Cep { get; private set; }
 
-        public void AtualizarInformacoes(string nome, string documento, string cep)
+        public void AtualizarInformacoes(string nome, string cep)
         {
             Nome = nome;
-            Documento = documento;
             Cep = cep;
         }
     }

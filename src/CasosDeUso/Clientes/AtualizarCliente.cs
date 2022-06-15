@@ -23,14 +23,14 @@ namespace CasosDeUso.Clientes
                 return;
             }
 
-            var jaPossuiCadastro = await persistenciaDoCliente.DoumentoJaCadastrado(atualizarClienteDto.Documento);
+            var jaPossuiCadastro = await persistenciaDoCliente.DoumentoJaCadastrado(cliente.Documento);
 
             if (jaPossuiCadastro)
             {
                 Erros.Add("Erro", "Clinte já cadastrado com este documento!");
             }
 
-            cliente.AtualizarInformacoes(atualizarClienteDto.Nome, atualizarClienteDto.Documento, atualizarClienteDto.Cep);
+            cliente.AtualizarInformacoes(atualizarClienteDto.Nome, atualizarClienteDto.Cep);
 
             await persistenciaDoCliente.Atualizar(cliente);
         }
