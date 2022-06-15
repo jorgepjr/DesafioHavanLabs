@@ -17,7 +17,7 @@ namespace Testes.CasosDeUso.ClienteTeste
             var atualizarCliente = new AtualizarCliente(persistenciaMock.Object);
 
             //Action
-            await atualizarCliente.Executar(ModelsMock.ClienteDtoMock, 2);
+            await atualizarCliente.Executar(ModelsMock.AtualizarClienteDtoMock);
 
             //Assert
             persistenciaMock.Verify(x => x.Atualizar(It.IsAny<Cliente>()), Times.Once());

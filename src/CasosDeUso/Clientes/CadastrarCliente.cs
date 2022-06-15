@@ -18,7 +18,7 @@ namespace CasosDeUso.Clientes
         {
             var cliente = new Cliente(clienteDto.Nome, clienteDto.Documento, clienteDto.Cep);
 
-            var jaPossuiCadastro = await persistenciaDoCliente.JaPossuiCadastro(clienteDto.Documento);
+            var jaPossuiCadastro = await persistenciaDoCliente.DoumentoJaCadastrado(clienteDto.Documento);
 
             if (jaPossuiCadastro)
             {

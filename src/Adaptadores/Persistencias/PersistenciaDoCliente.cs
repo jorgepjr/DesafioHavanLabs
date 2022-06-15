@@ -21,7 +21,7 @@ namespace Adaptadores.Persistencias
             await db.SaveChangesAsync();
         }
 
-        public async Task<bool> JaPossuiCadastro(string documento)
+        public async Task<bool> DoumentoJaCadastrado(string documento)
         {
             var resultado = await db.Clientes.AnyAsync(x => x.Documento == documento);
 

@@ -20,11 +20,11 @@ namespace Dominio
         public decimal Preco { get; private set; }
         public int Estoque { get; private set; }
 
-        public void AtualizarInformacoes(string codigo, string nome, decimal preco)
+        public void AtualizarInformacoes(string nome, decimal preco, int estoque)
         {
-            Codigo = codigo;
             Nome = nome;
             Preco = preco;
+            Estoque = estoque;
         }
 
         public void Subtrair(int quantidade)

@@ -23,7 +23,7 @@ namespace CasosDeUso.Clientes
                 return;
             }
 
-            var jaPossuiCadastro = await persistenciaDoCliente.JaPossuiCadastro(atualizarClienteDto.Documento);
+            var jaPossuiCadastro = await persistenciaDoCliente.DoumentoJaCadastrado(atualizarClienteDto.Documento);
 
             if (jaPossuiCadastro)
             {

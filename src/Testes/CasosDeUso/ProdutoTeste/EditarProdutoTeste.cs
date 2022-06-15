@@ -17,7 +17,7 @@ namespace Testes.CasosDeUso.ProdutoTeste
             var editarProduto = new EditarProduto(persistenciaMock.Object);
 
             //Action
-            await editarProduto.Executar(ModelsMock.ProdutoDtoMock, 2);
+            await editarProduto.Executar(ModelsMock.EditarProdutoDtoMock);
 
             //Assert
             persistenciaMock.Verify(x=>x.Atualizar(It.IsAny<Produto>()), Times.Once());

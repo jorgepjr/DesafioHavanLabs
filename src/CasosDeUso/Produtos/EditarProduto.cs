@@ -23,12 +23,7 @@ namespace CasosDeUso.Produtos
                 return;
             }
 
-            if (produto.Codigo == editarProdutoDto.Codigo)
-            {
-                Erros.Add("Erro", $"Codigo: {editarProdutoDto.Codigo} já existe!");
-            }
-
-            produto.AtualizarInformacoes(editarProdutoDto.Codigo, editarProdutoDto.Nome, editarProdutoDto.Preco);
+            produto.AtualizarInformacoes(editarProdutoDto.Nome, editarProdutoDto.Preco, editarProdutoDto.Estoque);
 
             await persistenciaDoProduto.Atualizar(produto);
         }

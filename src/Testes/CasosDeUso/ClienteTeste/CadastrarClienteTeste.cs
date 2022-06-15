@@ -37,7 +37,7 @@ namespace Testes.CasosDeUso.ClienteTeste
         public async Task DeveRetornarErroCasoClienteJaPossuirCadastro()
         {
             //Arrange
-            persistenciaDoCliente.Setup(x => x.JaPossuiCadastro(It.IsAny<string>())).ReturnsAsync(true);
+            persistenciaDoCliente.Setup(x => x.DoumentoJaCadastrado(It.IsAny<string>())).ReturnsAsync(true);
             var cadastrarCliente = new CadastrarCliente(persistenciaDoCliente.Object);
 
             //Action
