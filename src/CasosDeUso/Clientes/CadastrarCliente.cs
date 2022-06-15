@@ -22,7 +22,7 @@ namespace CasosDeUso.Clientes
 
             if (jaPossuiCadastro)
             {
-                Erros.Add("Erro", "Cliente já possui cadastro!");
+                Erros.Add("Erro", $"Documento nª: {clienteDto.Documento} já cadastrado!");
                 return;
             }
 

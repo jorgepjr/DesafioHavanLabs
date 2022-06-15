@@ -44,7 +44,7 @@ namespace Testes.CasosDeUso.ClienteTeste
             await cadastrarCliente.Executar(clienteDto);
 
             //Assert
-            Assert.Equal("Cliente já possui cadastro!", cadastrarCliente.Erros.First().Value);
+            Assert.Equal($"Documento nª: {clienteDto.Documento} já cadastrado!", cadastrarCliente.Erros.First().Value);
         }
     }
 }
