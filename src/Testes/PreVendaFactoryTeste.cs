@@ -12,9 +12,9 @@ namespace Testes
         {
             //Arrange
             var quantidade = 2;
-            var clienteId = 23;
+            var cliente = ModelsMock.ClienteMock;
             var produto = ModelsMock.ProdutoMock;
-            var preVenda = new PreVenda(clienteId);
+            var preVenda = new PreVenda(cliente);
             var itemPreVenda = new ItemPreVenda(produto, quantidade, produto.Preco);
             preVenda.AdicionarItens(itemPreVenda);
 

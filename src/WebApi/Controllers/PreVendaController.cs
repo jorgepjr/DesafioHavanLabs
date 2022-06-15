@@ -35,7 +35,7 @@ namespace WebApi.Controllers
 
             var cliente = await buscarClientePorDocumento.Executar(preVendaDto.DocumentoDoCliente);
 
-            var preVenda = await criarPreVenda.Executar(preVendaDto, cliente.Id);
+            var preVenda = await criarPreVenda.Executar(preVendaDto, cliente);
 
             if (criarPreVenda.Erros.Any())
             {

@@ -13,9 +13,9 @@ namespace CasosDeUso.Clientes
             this.persistenciaDoCliente = persistenciaDoCliente;
         }
 
-        public async Task Executar(ClienteDto clienteDto, int clienteId)
+        public async Task Executar(AtualizarClienteDto atualizarClienteDto)
         {
-            var cliente = await persistenciaDoCliente.BuscarPorId(clienteId);
+            var cliente = await persistenciaDoCliente.BuscarPorId(atualizarClienteDto.ClienteId);
 
             if (cliente is null)
             {
@@ -23,14 +23,14 @@ namespace CasosDeUso.Clientes
                 return;
             }
 
-            var jaPossuiCadastro = await persistenciaDoCliente.JaPossuiCadastro(clienteDto.Documento);
+            var jaPossuiCadastro = await persistenciaDoCliente.JaPossuiCadastro(atualizarClienteDto.Documento);
 
             if (jaPossuiCadastro)
             {
                 Erros.Add("Erro", "Clinte já cadastrado com este documento!");
             }
 
-            cliente.AtualizarInformacoes(clienteDto.Nome, clienteDto.Documento, clienteDto.Cep);
+            cliente.AtualizarInformacoes(atualizarClienteDto.Nome, atualizarClienteDto.Documento, atualizarClienteDto.Cep);
 
             await persistenciaDoCliente.Atualizar(cliente);
         }

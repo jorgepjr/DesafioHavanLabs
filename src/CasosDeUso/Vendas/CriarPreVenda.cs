@@ -17,14 +17,14 @@ namespace CasosDeUso.Vendas
             this.persistenciaDoProduto = persistenciaDoProduto;
         }
 
-        public async Task<PreVenda> Executar(PreVendaDto preVendaDto, int? clienteId)
+        public async Task<PreVenda> Executar(PreVendaDto preVendaDto, Cliente cliente)
         {
-            if (clienteId is null)
+            if (cliente is null)
             {
                 Erros.Add("Erro", "ClienteId inválido!");
             }
 
-            var preVenda = new PreVenda(clienteId.Value);
+            var preVenda = new PreVenda(cliente);
 
             foreach (var item in preVendaDto.Itens)
             {

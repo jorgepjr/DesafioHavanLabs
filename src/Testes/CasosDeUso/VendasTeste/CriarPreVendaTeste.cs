@@ -14,6 +14,7 @@ namespace Testes.CasosDeUso.VendasTeste
     public class CriarPreVendaTeste
     {
         Produto produto = ModelsMock.ProdutoMock;
+        Cliente cliente = ModelsMock.ClienteMock;
 
         Mock<IPersistenciaDoCliente> persistenciaDoClinte = new Mock<IPersistenciaDoCliente>();
         Mock<IPersistenciaDoProduto> persistenciaDoProduto = new Mock<IPersistenciaDoProduto>();
@@ -21,9 +22,8 @@ namespace Testes.CasosDeUso.VendasTeste
 
         public CriarPreVendaTeste()
         {
-            persistenciaDoClinte.Setup(x => x.BuscarPorDocumento(It.IsAny<string>())).ReturnsAsync(ModelsMock.ClienteMock);
+            persistenciaDoClinte.Setup(x => x.BuscarPorDocumento(It.IsAny<string>())).ReturnsAsync(cliente);
             persistenciaDoProduto.Setup(x => x.BuscarPorCodigo(It.IsAny<string>())).ReturnsAsync(produto);
-
         }
 
         [Fact]
@@ -36,7 +36,7 @@ namespace Testes.CasosDeUso.VendasTeste
             var criarPreVenda = new CriarPreVenda(persistenciaDaPreVenda.Object, persistenciaDoProduto.Object);
 
             //Action
-            await criarPreVenda.Executar(preVendaDto, It.IsAny<int>());
+            await criarPreVenda.Executar(preVendaDto, cliente);
 
             //Assert
             persistenciaDaPreVenda.Verify(x => x.Criar(It.IsAny<PreVenda>()), Times.Once());
@@ -46,7 +46,6 @@ namespace Testes.CasosDeUso.VendasTeste
         public async Task DeveAtualizarEstoqueAoAdicionarItemNaPreVenda()
         {
             //Arrange
-            var clienteId = 45;
             var estoque = 7;
 
             var itemDaPreVendaDto = new ItemPreVendaDto { CodigoDoProduto = "2", Quantidade = 5 };
@@ -55,7 +54,7 @@ namespace Testes.CasosDeUso.VendasTeste
             var criarPreVenda = new CriarPreVenda(persistenciaDaPreVenda.Object, persistenciaDoProduto.Object);
 
             //Action
-            await criarPreVenda.Executar(preVendaDto, clienteId);
+            await criarPreVenda.Executar(preVendaDto, cliente);
 
             //Assert
             Assert.Equal(estoque, produto.Estoque);
@@ -65,7 +64,6 @@ namespace Testes.CasosDeUso.VendasTeste
         public async Task DeveCalcularTotal()
         {
             //Arrange
-            var clienteId = 45;
             var estoque = 7;
 
             var itemDaPreVendaDto = new ItemPreVendaDto { CodigoDoProduto = "2", Quantidade = 5 };
@@ -74,7 +72,7 @@ namespace Testes.CasosDeUso.VendasTeste
             var criarPreVenda = new CriarPreVenda(persistenciaDaPreVenda.Object, persistenciaDoProduto.Object);
 
             //Action
-            await criarPreVenda.Executar(preVendaDto, clienteId);
+            await criarPreVenda.Executar(preVendaDto, cliente);
 
             //Assert
             Assert.Equal(estoque, produto.Estoque);
@@ -83,15 +81,13 @@ namespace Testes.CasosDeUso.VendasTeste
         [Fact]
         public async Task DeveRetornarErroCasoEstoqueTenhaAcabado()
         {
-            var clienteId = 45;
-           
             var itemDaPreVendaDto = new ItemPreVendaDto { CodigoDoProduto = "2", Quantidade = 15 };
             var itens = new List<ItemPreVendaDto> { itemDaPreVendaDto };
             var preVendaDto = new PreVendaDto { DocumentoDoCliente = "44445055", Itens = itens };
             var criarPreVenda = new CriarPreVenda(persistenciaDaPreVenda.Object, persistenciaDoProduto.Object);
 
             //Action
-            await criarPreVenda.Executar(preVendaDto, clienteId);
+            await criarPreVenda.Executar(preVendaDto, cliente);
 
             Assert.Equal($"Produto: [{produto.Nome}] indisponível!", criarPreVenda.Erros.First().Value);
         }

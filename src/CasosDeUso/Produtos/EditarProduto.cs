@@ -13,9 +13,9 @@ namespace CasosDeUso.Produtos
             this.persistenciaDoProduto = persistenciaDoProduto;
         }
 
-        public async Task Executar(ProdutoDto produtoDto, int produtoId)
+        public async Task Executar(EditarProdutoDto editarProdutoDto)
         {
-            var produto = await persistenciaDoProduto.BuscarPorId(produtoId);
+            var produto = await persistenciaDoProduto.BuscarPorId(editarProdutoDto.ProdutoId);
 
             if (produto is null)
             {
@@ -23,12 +23,12 @@ namespace CasosDeUso.Produtos
                 return;
             }
 
-            if (produto.Codigo == produtoDto.Codigo)
+            if (produto.Codigo == editarProdutoDto.Codigo)
             {
-                Erros.Add("Erro", $"Codigo: {produto.Codigo} já existe!");
+                Erros.Add("Erro", $"Codigo: {editarProdutoDto.Codigo} já existe!");
             }
 
-            produto.AtualizarInformacoes(produtoDto.Codigo, produtoDto.Nome, produtoDto.Preco);
+            produto.AtualizarInformacoes(editarProdutoDto.Codigo, editarProdutoDto.Nome, editarProdutoDto.Preco);
 
             await persistenciaDoProduto.Atualizar(produto);
         }

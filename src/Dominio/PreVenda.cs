@@ -8,9 +8,10 @@ namespace Dominio
     {
         protected PreVenda() { }
 
-        public PreVenda(int clienteId)
+        public PreVenda(Cliente cliente)
         {
-            ClienteId = clienteId;
+            Cliente = cliente;
+            ClienteId = cliente.Id;
             DataDeRegistro = DateTime.Now.Date;
         }
 

@@ -79,23 +79,23 @@ namespace WebApi.Controllers
         }
 
         [HttpPut]
-        [Route("Editar/{produtoId}")]
-        public async Task<IActionResult> Put(ProdutoDto produtoDto, int produtoId)
+        [Route("Editar")]
+        public async Task<IActionResult> Put(EditarProdutoDto editarProdutoDto)
         {
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(produtoDto);
+                return BadRequest(editarProdutoDto);
             }
 
-            await editarProduto.Executar(produtoDto, produtoId);
+            await editarProduto.Executar(editarProdutoDto);
 
             if (editarProduto.Erros.Any())
             {
                 return BadRequest(editarProduto.Erros.First().Value);
             }
 
-            return Ok(produtoDto);
+            return Ok(editarProdutoDto);
         }
     }
 }

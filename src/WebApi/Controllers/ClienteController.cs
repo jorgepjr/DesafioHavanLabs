@@ -88,16 +88,16 @@ namespace WebApi.Controllers
         }
 
         [HttpPut]
-        [Route("Editar/{clienteId}")]
-        public async Task<IActionResult> Put(ClienteDto clienteDto, int clienteId)
+        [Route("Editar")]
+        public async Task<IActionResult> Put([FromBody] AtualizarClienteDto atualizarClienteDto)
         {
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(clienteDto);
+                return BadRequest(atualizarClienteDto);
             }
 
-            await atualizarCliente.Executar(clienteDto, clienteId);
+            await atualizarCliente.Executar(atualizarClienteDto);
 
             if (atualizarCliente.Erros.Any())
             {
