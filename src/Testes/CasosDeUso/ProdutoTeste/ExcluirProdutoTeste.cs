@@ -15,14 +15,14 @@ namespace Testes.CasosDeUso.ProdutoTeste
         {
             //Arrange
             int produtoId = 1;
-            var persistenciaDoProduto = PersistenciaDoProdutoMock(1);
+            var (persistenciaDoProduto, produto) = PersistenciaDoProdutoBuscarPorIdMock(produtoId);
             var excluirProduto = new ExcluirProduto(persistenciaDoProduto.Object);
 
             //Action
             await excluirProduto.Executar(produtoId);
 
             //Assert
-            persistenciaDoProduto.Verify(x => x.Excluir(It.IsAny<Produto>()), Times.Once());
+            persistenciaDoProduto.Verify(x => x.Excluir(produto), Times.Once());
         }
 
         [Fact]

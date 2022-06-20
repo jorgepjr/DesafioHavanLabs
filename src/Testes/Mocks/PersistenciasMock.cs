@@ -6,14 +6,14 @@ namespace Testes.Mocks
 {
     public abstract class PersistenciasMock : DatabaseMock
     {
-        public Mock<IPersistenciaDoProduto> PersistenciaDoProdutoMock(int id)
+        public (Mock<IPersistenciaDoProduto> PersistenciaMock, Produto ProdutoMock) PersistenciaDoProdutoBuscarPorIdMock(int id)
         {
             var produto = BuscarProdutoMock(id);
 
             var persistenciaDoProduto = new Mock<IPersistenciaDoProduto>();
             persistenciaDoProduto.Setup(x => x.BuscarPorId(produto.Id)).ReturnsAsync(produto);
 
-            return persistenciaDoProduto;
+            return (persistenciaDoProduto, produto);
         }
 
         public (Mock<IPersistenciaDoProduto> PersistenciaMock, Produto ProdutoMock) PersistenciaDoProdutoBuscarPorCodigoMock(string codigo)

@@ -16,7 +16,7 @@ namespace Testes.CasosDeUso.ProdutoTeste
         {
             //Arrange
             var editarProdutoDto = ModelsMock.EditarProdutoDtoMock;
-            var persistenciaDoProduto = PersistenciaDoProdutoMock(editarProdutoDto.ProdutoId);
+            var (persistenciaDoProduto, produto) = PersistenciaDoProdutoBuscarPorIdMock(editarProdutoDto.ProdutoId);
             
             var editarProduto = new EditarProduto(persistenciaDoProduto.Object);
 
@@ -24,7 +24,7 @@ namespace Testes.CasosDeUso.ProdutoTeste
             await editarProduto.Executar(editarProdutoDto);
 
             //Assert
-            persistenciaDoProduto.Verify(x => x.Atualizar(It.IsAny<Produto>()), Times.Once());
+            persistenciaDoProduto.Verify(x => x.Atualizar(produto), Times.Once());
         }
     }
 }

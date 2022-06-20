@@ -23,7 +23,7 @@ namespace Testes.CasosDeUso.ClienteTeste
             await atualizarCliente.Executar(atualizarClienteDto);
 
             //Assert
-            persistenciaDoCliente.Verify(x => x.Atualizar(It.IsAny<Cliente>()), Times.Once());
+            persistenciaDoCliente.Verify(x => x.Atualizar(cliente), Times.Once());
         }
     }
 }
