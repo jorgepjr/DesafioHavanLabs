@@ -10,18 +10,22 @@ namespace CasosDeUso.Vendas
     {
         private readonly IPersistenciaDaPreVenda persistenciaDaPreVenda;
         private readonly IPersistenciaDoProduto persistenciaDoProduto;
+        private readonly IPersistenciaDoCliente persistenciaDoCliente;
 
-        public CriarPreVenda(IPersistenciaDaPreVenda persistenciaDaPreVenda, IPersistenciaDoProduto persistenciaDoProduto)
+        public CriarPreVenda(IPersistenciaDaPreVenda persistenciaDaPreVenda, IPersistenciaDoProduto persistenciaDoProduto, IPersistenciaDoCliente persistenciaDoCliente)
         {
             this.persistenciaDaPreVenda = persistenciaDaPreVenda;
             this.persistenciaDoProduto = persistenciaDoProduto;
+            this.persistenciaDoCliente = persistenciaDoCliente;
         }
 
-        public async Task<PreVenda> Executar(PreVendaDto preVendaDto, Cliente cliente)
+        public async Task<PreVenda> Executar(PreVendaDto preVendaDto, string documentoDoCliente)
         {
+            var cliente = await persistenciaDoCliente.BuscarPorDocumento(documentoDoCliente);
+
             if (cliente is null)
             {
-                Erros.Add("Erro", "ClienteId inválido!");
+                Erros.Add("Erro", "Cliente nao encontrado!");
             }
 
             var preVenda = new PreVenda(cliente);
@@ -35,9 +39,9 @@ namespace CasosDeUso.Vendas
                     await AtualizarEstoque(item.Quantidade, produto);
                 }
 
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    Erros.Add("Erro estoque", $"Produto: [{produto.Nome}] indisponível!");
+                    Erros.Add("Erro estoque", ex.Message);
                     return null;
                 }
 
@@ -52,7 +56,7 @@ namespace CasosDeUso.Vendas
 
         private async Task AtualizarEstoque(int quantidade, Produto produto)
         {
-            produto.Subtrair(quantidade);
+            produto.Subtrair(quantidade, produto.Nome);
             await persistenciaDoProduto.Atualizar(produto);
         }
     }
