@@ -27,11 +27,11 @@ namespace Dominio
             Estoque = estoque;
         }
 
-        public void Subtrair(int quantidade)
+        public void Subtrair(int quantidade, string nomeDoProduto)
         {
             if (Estoque == 0 || Estoque < quantidade)
             {
-                throw new Exception("Produto indisponível!");
+                throw new Exception($"Produto: [{nomeDoProduto}] indisponível!");
             }
 
             Estoque -= quantidade;
