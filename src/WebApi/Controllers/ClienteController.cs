@@ -38,9 +38,9 @@ namespace WebApi.Controllers
 
             await cadastrarCliente.Executar(clienteDto);
 
-            if (cadastrarCliente.Erros.Any())
+            if (cadastrarCliente.PossuiErro)
             {
-                return BadRequest(cadastrarCliente.Erros.First().Value);
+                return BadRequest(cadastrarCliente.MensagemDoErro);
             }
 
             var endereco = await buscarEndereco.Executar(clienteDto.Cep);
@@ -61,9 +61,9 @@ namespace WebApi.Controllers
 
             await excluirCliente.Executar(clienteId.Value);
 
-            if (excluirCliente.Erros.Any())
+            if (excluirCliente.PossuiErro)
             {
-                return BadRequest(excluirCliente.Erros.First().Value);
+                return BadRequest(excluirCliente.MensagemDoErro);
             }
 
             return Ok($"ClienteId: {clienteId} foi excluído com sucesso!");
@@ -75,9 +75,9 @@ namespace WebApi.Controllers
         {
             var cliente = await buscarClientePorDocumento.Executar(documento);
 
-            if (buscarClientePorDocumento.Erros.Any())
+            if (buscarClientePorDocumento.PossuiErro)
             {
-                return BadRequest(buscarClientePorDocumento.Erros.First().Value);
+                return BadRequest(buscarClientePorDocumento.MensagemDoErro);
             }
 
             var endereco = await buscarEndereco.Executar(cliente.Cep);
@@ -99,9 +99,9 @@ namespace WebApi.Controllers
 
             await atualizarCliente.Executar(atualizarClienteDto);
 
-            if (atualizarCliente.Erros.Any())
+            if (atualizarCliente.PossuiErro)
             {
-                return BadRequest(atualizarCliente.Erros.First().Value);
+                return BadRequest(atualizarCliente.MensagemDoErro);
             }
 
             return Ok("Ação realizada com sucesso!");

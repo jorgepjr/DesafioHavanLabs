@@ -22,7 +22,7 @@ namespace WebApi.Controllers
             IPersistenciaDoProduto persistenciaDoProduto)
         {
             buscarClientePorDocumento = new BuscarClientePorDocumento(persistenciaDoCliente);
-            criarPreVenda = new CriarPreVenda(persistenciaDaPreVenda, persistenciaDoProduto);
+            criarPreVenda = new CriarPreVenda(persistenciaDaPreVenda, persistenciaDoProduto, persistenciaDoCliente);
         }
 
         [HttpPost]
@@ -33,16 +33,14 @@ namespace WebApi.Controllers
                 return BadRequest(preVendaDto);
             }
 
-            var cliente = await buscarClientePorDocumento.Executar(preVendaDto.DocumentoDoCliente);
+            var preVenda = await criarPreVenda.Executar(preVendaDto, preVendaDto.DocumentoDoCliente);
 
-            var preVenda = await criarPreVenda.Executar(preVendaDto, cliente);
-
-            if (criarPreVenda.Erros.Any())
+            if (criarPreVenda.PossuiErro)
             {
-                return BadRequest(criarPreVenda.Erros.First().Value);
+                return BadRequest(criarPreVenda.MensagemDoErro);
             }
 
-            var vendaDto = PreVendaFactory.Criar(cliente.Nome, preVenda);
+            var vendaDto = PreVendaFactory.Criar(preVenda.Cliente.Nome, preVenda);
 
             return Ok(vendaDto);
         }

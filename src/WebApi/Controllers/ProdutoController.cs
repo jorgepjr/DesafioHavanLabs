@@ -15,6 +15,7 @@ namespace WebApi.Controllers
         private readonly CadastrarProduto cadastrarProduto;
         private readonly EditarProduto editarProduto;
         private readonly ExcluirProduto excluirProduto;
+        private readonly ListarProdutos listarProdutos;
 
 
         public ProdutoController(IPersistenciaDoProduto persistenciaDoProduto)
@@ -23,6 +24,7 @@ namespace WebApi.Controllers
             this.cadastrarProduto = new CadastrarProduto(persistenciaDoProduto);
             this.excluirProduto = new ExcluirProduto(persistenciaDoProduto);
             this.editarProduto = new EditarProduto(persistenciaDoProduto);
+            this.listarProdutos = new ListarProdutos(persistenciaDoProduto);
 
         }
 
@@ -37,9 +39,9 @@ namespace WebApi.Controllers
 
             await cadastrarProduto.Executar(produtoDto);
 
-            if (cadastrarProduto.Erros.Any())
+            if (cadastrarProduto.PossuiErro)
             {
-                return BadRequest(cadastrarProduto.Erros.First().Value);
+                return BadRequest(cadastrarProduto.MensagemDoErro);
             }
 
             return Ok("Produto cadastrado com sucesso!");
@@ -56,9 +58,9 @@ namespace WebApi.Controllers
 
             await excluirProduto.Executar(produtoId.Value);
 
-            if (excluirProduto.Erros.Any())
+            if (excluirProduto.PossuiErro)
             {
-                return BadRequest(excluirProduto.Erros.First().Value);
+                return BadRequest(excluirProduto.MensagemDoErro);
             }
 
             return Ok($"ProdutoId: {produtoId} foi excluído com sucesso!");
@@ -70,9 +72,9 @@ namespace WebApi.Controllers
         {
             var produto = await buscarProdutoPorCodigo.Executar(codigo);
 
-            if (buscarProdutoPorCodigo.Erros.Any())
+            if (buscarProdutoPorCodigo.PossuiErro)
             {
-                return BadRequest(buscarProdutoPorCodigo.Erros.First().Value);
+                return BadRequest(buscarProdutoPorCodigo.MensagemDoErro);
             }
 
             return Ok(produto);
@@ -90,12 +92,21 @@ namespace WebApi.Controllers
 
             await editarProduto.Executar(editarProdutoDto);
 
-            if (editarProduto.Erros.Any())
+            if (editarProduto.PossuiErro)
             {
-                return BadRequest(editarProduto.Erros.First().Value);
+                return BadRequest(editarProduto.MensagemDoErro);
             }
 
             return Ok(editarProdutoDto);
+        }
+
+        [HttpGet]
+        [Route("Listar")]
+        public async Task<IActionResult> Get(int skip, int take)
+        {
+            var (produtos, total) = await listarProdutos.Executar(skip, take);
+
+            return Ok(new { produtos, total});
         }
     }
 }

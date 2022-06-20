@@ -23,9 +23,9 @@ namespace WebApi.Controllers
         {
             var endereco = await buscarEndereco.Executar(cep);
 
-            if (buscarEndereco.Erros.Any())
+            if (buscarEndereco.PossuiErro)
             {
-                return BadRequest(buscarEndereco.Erros.First().Value);
+                return BadRequest(buscarEndereco.MensagemDoErro);
             }
 
             return Ok(endereco);
