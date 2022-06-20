@@ -1,4 +1,5 @@
 ﻿using CasosDeUso.Clientes;
+using CasosDeUso.Produtos;
 using Dominio;
 using Moq;
 using System.Threading.Tasks;
@@ -7,20 +8,22 @@ using Xunit;
 
 namespace Testes.CasosDeUso.ClienteTeste
 {
-   public class AtualizarClienteTeste : PersistenciasMock
+    public class AtualizarClienteTeste : PersistenciasMock
     {
         [Fact]
-        public async Task DeveEditarInformacoesDoProduto()
+        public async Task DeveEditarInformacoesDoCliente()
         {
             //Arrange
-            var persistenciaMock = BuscarClientePorIdMock();
-            var atualizarCliente = new AtualizarCliente(persistenciaMock.Object);
+            var atualizarClienteDto = ModelsMock.AtualizarClienteDtoMock;
+            var (persistenciaDoCliente, cliente) = PersistenciaDoClienteBuscarPorIdMock(atualizarClienteDto.ClienteId);
+
+            var atualizarCliente = new AtualizarCliente(persistenciaDoCliente.Object);
 
             //Action
-            await atualizarCliente.Executar(ModelsMock.AtualizarClienteDtoMock);
+            await atualizarCliente.Executar(atualizarClienteDto);
 
             //Assert
-            persistenciaMock.Verify(x => x.Atualizar(It.IsAny<Cliente>()), Times.Once());
+            persistenciaDoCliente.Verify(x => x.Atualizar(It.IsAny<Cliente>()), Times.Once());
         }
     }
 }

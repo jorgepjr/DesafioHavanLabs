@@ -38,7 +38,8 @@ namespace Testes.CasosDeUso.Enderecos
             await buscarEndereco.Executar("76806515");
 
             //Assert
-            Assert.Equal("Endereço não encontrado!", buscarEndereco.Erros.First().Value);
+            Assert.True(buscarEndereco.PossuiErro);
+            Assert.Equal("Endereço não encontrado!", buscarEndereco.MensagemDoErro);
         }
 
         [Fact]
@@ -52,7 +53,7 @@ namespace Testes.CasosDeUso.Enderecos
             await buscarEndereco.Executar("768065");
 
             //Assert
-            Assert.Equal("Cep inválido!", buscarEndereco.Erros.First().Value);
+            Assert.Equal("Cep inválido!", buscarEndereco.MensagemDoErro);
         }
     }
 }

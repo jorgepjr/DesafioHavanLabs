@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Testes
 {
-    public class PreVendaFactoryTeste : PersistenciasMock
+    public class PreVendaFactoryTeste
     {
         [Fact]
         public void DeveCriarVendaDto()

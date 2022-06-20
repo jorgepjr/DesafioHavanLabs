@@ -1,5 +1,6 @@
 ﻿using CasosDeUso.Produtos;
 using Dominio;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using System.Threading.Tasks;
 using Testes.Mocks;
@@ -9,18 +10,21 @@ namespace Testes.CasosDeUso.ProdutoTeste
 {
     public class EditarProdutoTeste : PersistenciasMock
     {
+       
         [Fact]
         public async Task DeveEditarInformacoesDoProduto()
         {
             //Arrange
-            var persistenciaMock = BuscarProdutoPorIdMock();
-            var editarProduto = new EditarProduto(persistenciaMock.Object);
+            var editarProdutoDto = ModelsMock.EditarProdutoDtoMock;
+            var persistenciaDoProduto = PersistenciaDoProdutoMock(editarProdutoDto.ProdutoId);
+            
+            var editarProduto = new EditarProduto(persistenciaDoProduto.Object);
 
             //Action
-            await editarProduto.Executar(ModelsMock.EditarProdutoDtoMock);
+            await editarProduto.Executar(editarProdutoDto);
 
             //Assert
-            persistenciaMock.Verify(x=>x.Atualizar(It.IsAny<Produto>()), Times.Once());
+            persistenciaDoProduto.Verify(x => x.Atualizar(It.IsAny<Produto>()), Times.Once());
         }
     }
 }

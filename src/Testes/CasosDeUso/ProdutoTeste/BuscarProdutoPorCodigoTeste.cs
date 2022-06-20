@@ -1,29 +1,19 @@
-﻿using Adaptadores.Interfaces;
-using CasosDeUso.Produtos;
-using Moq;
-using System.Linq;
+﻿using CasosDeUso.Produtos;
 using System.Threading.Tasks;
 using Testes.Mocks;
 using Xunit;
 
 namespace Testes.CasosDeUso.ProdutoTeste
 {
-    public class BuscarProdutoPorCodigoTeste
+    public class BuscarProdutoPorCodigoTeste : PersistenciasMock
     {
-        Mock<IPersistenciaDoProduto> persistenciaDoProduto;
-
-        public BuscarProdutoPorCodigoTeste()
-        {
-            this.persistenciaDoProduto = new Mock<IPersistenciaDoProduto>();
-        }
-
         [Fact]
         public async Task DeveBuscarProdutoPeloCodigo()
         {
+
             //Arrange
-            var codigo = "123";
-            var produtoMock = ModelsMock.ProdutoMock;
-            persistenciaDoProduto.Setup(x => x.BuscarPorCodigo(produtoMock.Codigo)).ReturnsAsync(produtoMock);
+            var codigo = "9";
+            var persistenciaDoProduto = PersistenciaDoProdutoBuscarPorCodigoMock(codigo).PersistenciaMock;
             var buscarProdutoPorCodigo = new BuscarProdutoPorCodigo(persistenciaDoProduto.Object);
 
             //Action
@@ -37,13 +27,17 @@ namespace Testes.CasosDeUso.ProdutoTeste
         public async Task DeveRetornarErroCasoProdutoNaoEncontrado()
         {
             //Arrange
+            var codigo = "50";
+            var persistenciaDoProduto = PersistenciaDoProdutoBuscarPorCodigoMock(codigo).PersistenciaMock;
             var buscarProdutoPorCodigo = new BuscarProdutoPorCodigo(persistenciaDoProduto.Object);
 
             //Action
-            var produto = await buscarProdutoPorCodigo.Executar("554");
+            var produto = await buscarProdutoPorCodigo.Executar(codigo);
 
             //Assert
-            Assert.Equal("Produto não encontrado!", buscarProdutoPorCodigo.Erros.First().Value);
+            Assert.True(buscarProdutoPorCodigo.PossuiErro);
+            Assert.Equal("Produto não encontrado!", buscarProdutoPorCodigo.MensagemDoErro);
+            Assert.Null(produto);
         }
     }
 }

@@ -15,7 +15,6 @@ namespace WebApi.Controllers
         private readonly CadastrarProduto cadastrarProduto;
         private readonly EditarProduto editarProduto;
         private readonly ExcluirProduto excluirProduto;
-        private readonly ListarProdutos listarProdutos;
 
 
         public ProdutoController(IPersistenciaDoProduto persistenciaDoProduto)
@@ -24,8 +23,6 @@ namespace WebApi.Controllers
             this.cadastrarProduto = new CadastrarProduto(persistenciaDoProduto);
             this.excluirProduto = new ExcluirProduto(persistenciaDoProduto);
             this.editarProduto = new EditarProduto(persistenciaDoProduto);
-            this.listarProdutos = new ListarProdutos(persistenciaDoProduto);
-
         }
 
         [HttpPost]
@@ -98,15 +95,6 @@ namespace WebApi.Controllers
             }
 
             return Ok(editarProdutoDto);
-        }
-
-        [HttpGet]
-        [Route("Listar")]
-        public async Task<IActionResult> Get(int skip, int take)
-        {
-            var (produtos, total) = await listarProdutos.Executar(skip, take);
-
-            return Ok(new { produtos, total});
         }
     }
 }

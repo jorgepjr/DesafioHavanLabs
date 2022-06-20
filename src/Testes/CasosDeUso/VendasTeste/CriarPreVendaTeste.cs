@@ -11,32 +11,26 @@ using Xunit;
 
 namespace Testes.CasosDeUso.VendasTeste
 {
-    public class CriarPreVendaTeste
+    public class CriarPreVendaTeste : PersistenciasMock
     {
-        Produto produto = ModelsMock.ProdutoMock;
-        Cliente cliente = ModelsMock.ClienteMock;
-
-        Mock<IPersistenciaDoCliente> persistenciaDoClinte = new Mock<IPersistenciaDoCliente>();
-        Mock<IPersistenciaDoProduto> persistenciaDoProduto = new Mock<IPersistenciaDoProduto>();
-        Mock<IPersistenciaDaPreVenda> persistenciaDaPreVenda = new Mock<IPersistenciaDaPreVenda>();
-
-        public CriarPreVendaTeste()
-        {
-            persistenciaDoClinte.Setup(x => x.BuscarPorDocumento(It.IsAny<string>())).ReturnsAsync(cliente);
-            persistenciaDoProduto.Setup(x => x.BuscarPorCodigo(It.IsAny<string>())).ReturnsAsync(produto);
-        }
-
         [Fact]
         public async Task DeveCriarUmaPreVenda()
         {
             //Arrange
-            var itemDaPreVendaDto = new ItemPreVendaDto { CodigoDoProduto = "2", Quantidade = 5 };
+            var documento = "8";
+            var codigo = "10";
+            var (persistenciaDoCliente, cliente) = PersistenciaDoClienteBuscarDocumentoMock(documento);
+            var (persistenciaDoProduto, produto) = PersistenciaDoProdutoBuscarPorCodigoMock(codigo);
+            var persistenciaDaPreVenda = new Mock<IPersistenciaDaPreVenda>();
+
+            var itemDaPreVendaDto = new ItemPreVendaDto { CodigoDoProduto = codigo, Quantidade = 5 };
             var itens = new List<ItemPreVendaDto> { itemDaPreVendaDto };
-            var preVendaDto = new PreVendaDto { DocumentoDoCliente = "44445055", Itens = itens };
-            var criarPreVenda = new CriarPreVenda(persistenciaDaPreVenda.Object, persistenciaDoProduto.Object);
+            var preVendaDto = new PreVendaDto { DocumentoDoCliente = cliente.Documento, Itens = itens };
+
+            var criarPreVenda = new CriarPreVenda(persistenciaDaPreVenda.Object, persistenciaDoProduto.Object, persistenciaDoCliente.Object);
 
             //Action
-            await criarPreVenda.Executar(preVendaDto, cliente);
+            await criarPreVenda.Executar(preVendaDto, cliente.Documento);
 
             //Assert
             persistenciaDaPreVenda.Verify(x => x.Criar(It.IsAny<PreVenda>()), Times.Once());
@@ -46,33 +40,22 @@ namespace Testes.CasosDeUso.VendasTeste
         public async Task DeveAtualizarEstoqueAoAdicionarItemNaPreVenda()
         {
             //Arrange
-            var estoque = 7;
+            var estoque = 15;
+            var documento = "6";
+            var codigo = "10";
 
-            var itemDaPreVendaDto = new ItemPreVendaDto { CodigoDoProduto = "2", Quantidade = 5 };
+            var (persistenciaDoProduto, produto) = PersistenciaDoProdutoBuscarPorCodigoMock(codigo);
+            var (persistenciaDoCliente, cliente) = PersistenciaDoClienteBuscarDocumentoMock(documento);
+            var persistenciaDaPreVenda = new Mock<IPersistenciaDaPreVenda>();
+
+            var itemDaPreVendaDto = new ItemPreVendaDto { CodigoDoProduto = codigo, Quantidade = 5 };
             var itens = new List<ItemPreVendaDto> { itemDaPreVendaDto };
-            var preVendaDto = new PreVendaDto { DocumentoDoCliente = "44445055", Itens = itens };
-            var criarPreVenda = new CriarPreVenda(persistenciaDaPreVenda.Object, persistenciaDoProduto.Object);
+            var preVendaDto = new PreVendaDto { DocumentoDoCliente = cliente.Documento, Itens = itens };
+
+            var criarPreVenda = new CriarPreVenda(persistenciaDaPreVenda.Object, persistenciaDoProduto.Object, persistenciaDoCliente.Object);
 
             //Action
-            await criarPreVenda.Executar(preVendaDto, cliente);
-
-            //Assert
-            Assert.Equal(estoque, produto.Estoque);
-        }
-
-        [Fact]
-        public async Task DeveCalcularTotal()
-        {
-            //Arrange
-            var estoque = 7;
-
-            var itemDaPreVendaDto = new ItemPreVendaDto { CodigoDoProduto = "2", Quantidade = 5 };
-            var itens = new List<ItemPreVendaDto> { itemDaPreVendaDto };
-            var preVendaDto = new PreVendaDto { DocumentoDoCliente = "44445055", Itens = itens };
-            var criarPreVenda = new CriarPreVenda(persistenciaDaPreVenda.Object, persistenciaDoProduto.Object);
-
-            //Action
-            await criarPreVenda.Executar(preVendaDto, cliente);
+            await criarPreVenda.Executar(preVendaDto, cliente.Documento);
 
             //Assert
             Assert.Equal(estoque, produto.Estoque);
@@ -81,14 +64,26 @@ namespace Testes.CasosDeUso.VendasTeste
         [Fact]
         public async Task DeveRetornarErroCasoEstoqueTenhaAcabado()
         {
-            var itemDaPreVendaDto = new ItemPreVendaDto { CodigoDoProduto = "2", Quantidade = 15 };
+            //Arrange
+            var documento = "6";
+            var codigo = "7";
+            var (persistenciaDoCliente, cliente) = PersistenciaDoClienteBuscarDocumentoMock(documento);
+            var (persistenciaDoProduto, produto) = PersistenciaDoProdutoBuscarPorCodigoMock(codigo);
+            var persistenciaDaPreVenda = new Mock<IPersistenciaDaPreVenda>();
+
+            var itemDaPreVendaDto = new ItemPreVendaDto { CodigoDoProduto = produto.Codigo, Quantidade = 50 };
+
             var itens = new List<ItemPreVendaDto> { itemDaPreVendaDto };
-            var preVendaDto = new PreVendaDto { DocumentoDoCliente = "44445055", Itens = itens };
-            var criarPreVenda = new CriarPreVenda(persistenciaDaPreVenda.Object, persistenciaDoProduto.Object);
+
+            var preVendaDto = new PreVendaDto { DocumentoDoCliente = cliente.Documento, Itens = itens };
+
+            var criarPreVenda = new CriarPreVenda(persistenciaDaPreVenda.Object, persistenciaDoProduto.Object, persistenciaDoCliente.Object);
 
             //Action
-            await criarPreVenda.Executar(preVendaDto, cliente);
+            await criarPreVenda.Executar(preVendaDto, cliente.Documento);
 
+
+            //Assert
             Assert.Equal($"Produto: [{produto.Nome}] indisponível!", criarPreVenda.Erros.First().Value);
         }
     }
