@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using System;
 using Testes.Mocks;
 using WebApi.Factories;
 using Xunit;
@@ -14,9 +15,8 @@ namespace Testes
             var quantidade = 2;
             var cliente = ModelsMock.ClienteMock;
             var produto = ModelsMock.ProdutoMock;
-            var preVenda = new PreVenda(cliente);
-            var itemPreVenda = new ItemPreVenda(produto, quantidade, produto.Preco);
-            preVenda.AdicionarItens(itemPreVenda);
+            var preVenda = PreVenda.Nova.IncluirCliente(cliente);
+            preVenda.AdicionarItens(produto, quantidade, produto.Preco);
 
             //Action
             var vendaDto = PreVendaFactory.Criar("88896655544", preVenda);
@@ -27,6 +27,7 @@ namespace Testes
             Assert.Equal(30.00m, vendaDto.Itens[0].PrecoUnitario);
             Assert.Equal(2, vendaDto.Itens[0].Quantidade);
             Assert.Equal(60.00m, vendaDto.Total);
+            Assert.Equal(DateTime.Now.Date, preVenda.DataDeRegistro.Date);
         }
     }
 }
