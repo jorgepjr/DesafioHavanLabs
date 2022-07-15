@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Adaptadores.Dtos
+namespace CasosDeUso.Dtos
 {
     public class EnderecoDto
     {

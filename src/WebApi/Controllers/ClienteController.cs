@@ -1,10 +1,10 @@
-﻿using Adaptadores.Dtos;
-using Adaptadores.Interfaces;
-using CasosDeUso.Clientes;
+﻿using CasosDeUso.ClientApi;
+using CasosDeUso.Dtos;
 using CasosDeUso.Enderecos;
+using CasosDeUso.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using System.Threading.Tasks;
+using WebApi.Extensions;
 
 namespace WebApi.Controllers
 {
@@ -12,19 +12,13 @@ namespace WebApi.Controllers
     [Route("[controller]")]
     public class ClienteController : ControllerBase
     {
-        private readonly BuscarClientePorDocumento buscarClientePorDocumento;
-        private readonly CadastrarCliente cadastrarCliente;
-        private readonly ExcluirCliente excluirCliente;
-        private readonly AtualizarCliente atualizarCliente;
+        private readonly ICadastroDoCliente cadastroDoCliente;
         private readonly BuscarEndereco buscarEndereco;
 
-        public ClienteController(IPersistenciaDoCliente persistenciaDoCliente, IApiViaCep apiViaCep)
+        public ClienteController(IApiViaCep apiViaCep, ICadastroDoCliente cadastroDoCliente)
         {
-            this.buscarClientePorDocumento = new BuscarClientePorDocumento(persistenciaDoCliente);
-            this.cadastrarCliente = new CadastrarCliente(persistenciaDoCliente);
-            this.excluirCliente = new ExcluirCliente(persistenciaDoCliente);
-            this.atualizarCliente = new AtualizarCliente(persistenciaDoCliente);
             this.buscarEndereco = new BuscarEndereco(apiViaCep);
+            this.cadastroDoCliente = cadastroDoCliente;
         }
 
         [HttpPost]
@@ -36,11 +30,11 @@ namespace WebApi.Controllers
                 return BadRequest(clienteDto);
             }
 
-            await cadastrarCliente.Executar(clienteDto);
+            await cadastroDoCliente.Registrar(clienteDto);
 
-            if (cadastrarCliente.PossuiErro)
+            if (cadastroDoCliente.PossuiErro())
             {
-                return BadRequest(cadastrarCliente.MensagemDoErro);
+                return BadRequest(cadastroDoCliente.MensagemDeErro());
             }
 
             var endereco = await buscarEndereco.Executar(clienteDto.Cep);
@@ -59,11 +53,11 @@ namespace WebApi.Controllers
                 return BadRequest($"{clienteId} invalido!");
             }
 
-            await excluirCliente.Executar(clienteId.Value);
+            await cadastroDoCliente.Excluir(clienteId.Value);
 
-            if (excluirCliente.PossuiErro)
+            if (cadastroDoCliente.PossuiErro())
             {
-                return BadRequest(excluirCliente.MensagemDoErro);
+                return BadRequest(cadastroDoCliente.MensagemDeErro());
             }
 
             return Ok($"ClienteId: {clienteId} foi excluído com sucesso!");
@@ -73,11 +67,11 @@ namespace WebApi.Controllers
         [Route("Buscar/{documento}")]
         public async Task<IActionResult> Get(string documento)
         {
-            var cliente = await buscarClientePorDocumento.Executar(documento);
+            var cliente = await cadastroDoCliente.BuscarPorDocumento(documento);
 
-            if (buscarClientePorDocumento.PossuiErro)
+            if (cadastroDoCliente.PossuiErro())
             {
-                return BadRequest(buscarClientePorDocumento.MensagemDoErro);
+                return BadRequest(cadastroDoCliente.MensagemDeErro());
             }
 
             var endereco = await buscarEndereco.Executar(cliente.Cep);
@@ -97,11 +91,11 @@ namespace WebApi.Controllers
                 return BadRequest(atualizarClienteDto);
             }
 
-            await atualizarCliente.Executar(atualizarClienteDto);
+            await cadastroDoCliente.Atualizar(atualizarClienteDto);
 
-            if (atualizarCliente.PossuiErro)
+            if (cadastroDoCliente.PossuiErro())
             {
-                return BadRequest(atualizarCliente.MensagemDoErro);
+                return BadRequest(cadastroDoCliente.MensagemDeErro());
             }
 
             return Ok("Ação realizada com sucesso!");

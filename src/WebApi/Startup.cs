@@ -1,7 +1,9 @@
 using Adaptadores;
-using Adaptadores.Interfaces;
 using Adaptadores.Persistencias;
-using CasosDeUso;
+using CasosDeUso.ClientApi;
+using CasosDeUso.Clientes;
+using CasosDeUso.Interfaces;
+using Dominio.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +49,9 @@ namespace WebApi
             services.AddScoped<IPersistenciaDoCliente, PersistenciaDoCliente>();
             services.AddScoped<IPersistenciaDoProduto, PersistenciaDoProduto>();
             services.AddScoped<IPersistenciaDaPreVenda, PersistenciaDaPreVenda>();
+
+
+            services.AddScoped<ICadastroDoCliente, CadastroDoCliente>();
 
         }
 

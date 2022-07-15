@@ -1,4 +1,4 @@
-﻿namespace Adaptadores.Dtos
+﻿namespace CasosDeUso.Dtos
 {
     public class ItemVendaDto
     {

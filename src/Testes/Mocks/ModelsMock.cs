@@ -1,4 +1,4 @@
-﻿using Adaptadores.Dtos;
+﻿using CasosDeUso.Dtos;
 using Dominio;
 
 namespace Testes.Mocks

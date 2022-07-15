@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
 namespace Dominio
 {
@@ -17,6 +17,7 @@ namespace Dominio
         public string Nome { get; private set; }
         public string Documento { get; private set; }
         public string Cep { get; private set; }
+        public IEnumerable<PreVenda> PreVendas { get; private set; }
 
         public void AtualizarInformacoes(string nome, string cep)
         {

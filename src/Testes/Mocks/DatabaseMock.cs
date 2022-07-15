@@ -23,8 +23,8 @@ namespace Testes.Mocks
         protected void CriarProdutoMock()
         {
             var produto = new Faker<Produto>("pt_BR")
-               .CustomInstantiator(x => new Produto(x.Commerce.Product(), x.Random.Int(1, 10).ToString(), x.Random.Int(1, 100), 20))
-               .Generate(10);
+               .CustomInstantiator(x => new Produto(x.Commerce.Product(), x.Random.Int(1, 50).ToString(), x.Random.Int(1, 100), 100))
+               .Generate(30);
 
             contextoMock.Produtos.AddRange(produto);
             contextoMock.SaveChanges();

@@ -1,4 +1,4 @@
-﻿using Adaptadores.Dtos;
+﻿using CasosDeUso.Dtos;
 using Dominio;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,17 +15,17 @@ namespace WebApi.Factories
             {
                 Cliente = cliente,
                 Itens = itens,
-                Total = preVenda.CalcularTotal()
+                Total = preVenda.CalcularTotal
             };
         }
 
-        public static List<ItemVendaDto> ListaDeItens(List<ItemPreVenda> itens)
+        private static List<ItemVendaDto> ListaDeItens(List<ItemPreVenda> itens)
         {
             return itens.Select(x => new ItemVendaDto
             {
                 CodigoDoProduto = x.Produto?.Codigo,
                 Quantidade = x.Quantidade,
-                PrecoUnitario =  x.PrecoUnitario
+                PrecoUnitario = x.PrecoUnitario
 
             }).ToList();
         }

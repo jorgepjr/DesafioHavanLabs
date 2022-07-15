@@ -1,11 +1,9 @@
-﻿using Adaptadores.Dtos;
-using Adaptadores.Interfaces;
-using CasosDeUso.Clientes;
+﻿using CasosDeUso.Clientes;
+using CasosDeUso.Dtos;
 using Dominio;
+using Dominio.Interfaces;
 using Moq;
-using System.Linq;
 using System.Threading.Tasks;
-using Testes.Mocks;
 using Xunit;
 
 namespace Testes.CasosDeUso.ClienteTeste
@@ -19,10 +17,10 @@ namespace Testes.CasosDeUso.ClienteTeste
         {
             //Arrange
             var persistenciaDoCliente = new Mock<IPersistenciaDoCliente>();
-            var cadastrarCliente = new CadastrarCliente(persistenciaDoCliente.Object);
+            var cadastrarCliente = new CadastroDoCliente(persistenciaDoCliente.Object);
 
             //Action
-            await cadastrarCliente.Executar(clienteDto);
+            await cadastrarCliente.Registrar(clienteDto);
 
             //Assert
             persistenciaDoCliente.Verify(x => x.Salvar(It.IsAny<Cliente>()), Times.Once());
@@ -34,10 +32,10 @@ namespace Testes.CasosDeUso.ClienteTeste
             //Arrange
             var persistenciaDoCliente = new Mock<IPersistenciaDoCliente>();
             persistenciaDoCliente.Setup(x => x.DoumentoJaCadastrado(It.IsAny<string>())).ReturnsAsync(true);
-            var cadastrarCliente = new CadastrarCliente(persistenciaDoCliente.Object);
+            var cadastrarCliente = new CadastroDoCliente(persistenciaDoCliente.Object);
 
             //Action
-            await cadastrarCliente.Executar(clienteDto);
+            await cadastrarCliente.Registrar(clienteDto);
 
             //Assert
             Assert.Equal($"Documento nª: {clienteDto.Documento} já cadastrado!", cadastrarCliente.MensagemDoErro);

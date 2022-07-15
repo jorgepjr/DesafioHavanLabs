@@ -1,6 +1,6 @@
-﻿using Adaptadores.Interfaces;
-using CasosDeUso.Produtos;
+﻿using CasosDeUso.Produtos;
 using Dominio;
+using Dominio.Interfaces;
 using Moq;
 using System.Threading.Tasks;
 using Testes.Mocks;
@@ -15,14 +15,14 @@ namespace Testes.CasosDeUso.ProdutoTeste
         {
             //Arrange
             int produtoId = 1;
-            var (persistenciaDoProduto, produto) = PersistenciaDoProdutoBuscarPorIdMock(produtoId);
+            var persistenciaDoProduto = PersistenciaDoProdutoBuscarPorIdMock(produtoId);
             var excluirProduto = new ExcluirProduto(persistenciaDoProduto.Object);
 
             //Action
             await excluirProduto.Executar(produtoId);
 
             //Assert
-            persistenciaDoProduto.Verify(x => x.Excluir(produto), Times.Once());
+            persistenciaDoProduto.Verify(x => x.Excluir(It.IsAny<Produto>()), Times.Once());
         }
 
         [Fact]

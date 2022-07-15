@@ -1,7 +1,6 @@
-﻿using Adaptadores.Interfaces;
+﻿using CasosDeUso.ClientApi;
 using CasosDeUso.Enderecos;
 using Refit;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 

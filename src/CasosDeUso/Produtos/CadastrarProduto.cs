@@ -1,6 +1,6 @@
-﻿using Adaptadores.Dtos;
-using Adaptadores.Interfaces;
+﻿using CasosDeUso.Dtos;
 using Dominio;
+using Dominio.Interfaces;
 using System.Threading.Tasks;
 
 namespace CasosDeUso.Produtos

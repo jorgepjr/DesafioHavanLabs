@@ -1,8 +1,7 @@
-﻿using Adaptadores.Dtos;
-using Adaptadores.Interfaces;
+﻿using CasosDeUso.Dtos;
 using CasosDeUso.Produtos;
+using Dominio.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace WebApi.Controllers

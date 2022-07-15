@@ -15,8 +15,8 @@ namespace Testes
             var quantidade = 2;
             var cliente = ModelsMock.ClienteMock;
             var produto = ModelsMock.ProdutoMock;
-            var preVenda = PreVenda.Nova.IncluirCliente(cliente);
-            preVenda.AdicionarItens(produto, quantidade, produto.Preco);
+            var preVenda = new  PreVenda(cliente);
+            preVenda.AdicionarItem(produto, quantidade, produto.Preco);
 
             //Action
             var vendaDto = PreVendaFactory.Criar("88896655544", preVenda);

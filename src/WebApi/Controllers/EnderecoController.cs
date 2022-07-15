@@ -1,8 +1,6 @@
-﻿using Adaptadores.Interfaces;
+﻿using CasosDeUso.ClientApi;
 using CasosDeUso.Enderecos;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace WebApi.Controllers

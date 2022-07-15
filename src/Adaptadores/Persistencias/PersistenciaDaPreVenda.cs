@@ -1,5 +1,5 @@
-﻿using Adaptadores.Interfaces;
-using Dominio;
+﻿using Dominio;
+using Dominio.Interfaces;
 using System.Threading.Tasks;
 
 namespace Adaptadores.Persistencias

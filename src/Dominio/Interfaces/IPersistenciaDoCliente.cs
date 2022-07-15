@@ -1,8 +1,7 @@
-﻿using Dominio;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Adaptadores.Interfaces
+namespace Dominio.Interfaces
 {
     public interface IPersistenciaDoCliente
     {

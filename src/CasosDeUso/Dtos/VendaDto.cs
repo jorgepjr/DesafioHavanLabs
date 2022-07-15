@@ -1,7 +1,6 @@
-﻿using Dominio;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Adaptadores.Dtos
+namespace CasosDeUso.Dtos
 {
     public class VendaDto
     {

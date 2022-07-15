@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Adaptadores.Dtos
+namespace CasosDeUso.Dtos
 {
     public class ItemPreVendaDto
     {

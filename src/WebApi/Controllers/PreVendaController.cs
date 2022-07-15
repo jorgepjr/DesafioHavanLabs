@@ -1,9 +1,8 @@
-﻿using Adaptadores.Dtos;
-using Adaptadores.Interfaces;
-using CasosDeUso.Clientes;
+﻿using CasosDeUso.Dtos;
+using CasosDeUso.Interfaces;
 using CasosDeUso.Vendas;
+using Dominio.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using System.Threading.Tasks;
 using WebApi.Factories;
 
@@ -13,16 +12,14 @@ namespace WebApi.Controllers
     [Route("[controller]")]
     public class PreVendaController : ControllerBase
     {
-        private readonly BuscarClientePorDocumento buscarClientePorDocumento;
         private readonly CriarPreVenda criarPreVenda;
 
         public PreVendaController(
             IPersistenciaDaPreVenda persistenciaDaPreVenda,
-            IPersistenciaDoCliente persistenciaDoCliente,
+            ICadastroDoCliente cadastroDoCliente,
             IPersistenciaDoProduto persistenciaDoProduto)
         {
-            buscarClientePorDocumento = new BuscarClientePorDocumento(persistenciaDoCliente);
-            criarPreVenda = new CriarPreVenda(persistenciaDaPreVenda, persistenciaDoProduto, persistenciaDoCliente);
+            criarPreVenda = new CriarPreVenda(persistenciaDaPreVenda, persistenciaDoProduto, cadastroDoCliente);
         }
 
         [HttpPost]
@@ -33,7 +30,7 @@ namespace WebApi.Controllers
                 return BadRequest(preVendaDto);
             }
 
-            var preVenda = await criarPreVenda.Executar(preVendaDto, preVendaDto.DocumentoDoCliente);
+            var preVenda = await criarPreVenda.Executar(preVendaDto);
 
             if (criarPreVenda.PossuiErro)
             {

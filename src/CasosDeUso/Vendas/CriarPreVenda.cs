@@ -1,6 +1,7 @@
-﻿using Adaptadores.Dtos;
-using Adaptadores.Interfaces;
+﻿using CasosDeUso.Dtos;
+using CasosDeUso.Interfaces;
 using Dominio;
+using Dominio.Interfaces;
 using System;
 using System.Threading.Tasks;
 
@@ -10,18 +11,18 @@ namespace CasosDeUso.Vendas
     {
         private readonly IPersistenciaDaPreVenda persistenciaDaPreVenda;
         private readonly IPersistenciaDoProduto persistenciaDoProduto;
-        private readonly IPersistenciaDoCliente persistenciaDoCliente;
+        private readonly ICadastroDoCliente cadastroDoCliente;
 
-        public CriarPreVenda(IPersistenciaDaPreVenda persistenciaDaPreVenda, IPersistenciaDoProduto persistenciaDoProduto, IPersistenciaDoCliente persistenciaDoCliente)
+        public CriarPreVenda(IPersistenciaDaPreVenda persistenciaDaPreVenda, IPersistenciaDoProduto persistenciaDoProduto, ICadastroDoCliente cadastroDoCliente)
         {
             this.persistenciaDaPreVenda = persistenciaDaPreVenda;
             this.persistenciaDoProduto = persistenciaDoProduto;
-            this.persistenciaDoCliente = persistenciaDoCliente;
+            this.cadastroDoCliente = cadastroDoCliente;
         }
 
-        public async Task<PreVenda> Executar(PreVendaDto preVendaDto, string documentoDoCliente)
+        public async Task<PreVenda> Executar(PreVendaDto preVendaDto)
         {
-            var cliente = await persistenciaDoCliente.BuscarPorDocumento(documentoDoCliente);
+            var cliente = await cadastroDoCliente.BuscarPorDocumento(preVendaDto.DocumentoDoCliente);
 
             if (cliente is null)
             {
@@ -34,29 +35,40 @@ namespace CasosDeUso.Vendas
             {
                 var produto = await persistenciaDoProduto.BuscarPorCodigo(item.CodigoDoProduto);
 
-                try
+                if (produto is null)
                 {
-                    await AtualizarEstoque(item.Quantidade, produto);
-                }
-
-                catch (Exception ex)
-                {
-                    Erros.Add("Erro estoque", ex.Message);
+                    Erros.Add("Erro", "Produto não existe!");
                     return null;
                 }
 
-                var itemPrevenda = new ItemPreVenda(produto, item.Quantidade, produto.Preco);
-                preVenda.AdicionarItens(itemPrevenda);
+                try
+                {
+                    preVenda.AdicionarItem(produto, item.Quantidade, produto.Preco);
+                    await AtualizarEstoque(item.Quantidade, produto);
+                }
+                catch (Exception ex)
+                {
+
+                    Erros.Add("Erro", ex.Message); ;
+                }
             }
 
-            await persistenciaDaPreVenda.Criar(preVenda);
+            try
+            {
+                await persistenciaDaPreVenda.Criar(preVenda);
+                return preVenda;
+            }
 
-            return preVenda;
+            catch (Exception ex)
+            {
+                Erros.Add("Erro estoque", ex.Message);
+                return null;
+            }
         }
 
         private async Task AtualizarEstoque(int quantidade, Produto produto)
         {
-            produto.Subtrair(quantidade, produto.Nome);
+            produto.RetirarDoEstoque(quantidade, produto.Nome);
             await persistenciaDoProduto.Atualizar(produto);
         }
     }

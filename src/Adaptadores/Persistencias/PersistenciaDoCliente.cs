@@ -1,5 +1,5 @@
-﻿using Adaptadores.Interfaces;
-using Dominio;
+﻿using Dominio;
+using Dominio.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;

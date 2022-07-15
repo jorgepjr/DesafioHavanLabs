@@ -1,7 +1,6 @@
-﻿using Dominio;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-namespace Adaptadores.Interfaces
+namespace Dominio.Interfaces
 {
     public interface IPersistenciaDaPreVenda
     {

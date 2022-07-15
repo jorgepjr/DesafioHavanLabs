@@ -1,9 +1,9 @@
-﻿using Adaptadores.Interfaces;
+﻿using Dominio.Interfaces;
 using System.Threading.Tasks;
 
 namespace CasosDeUso.Produtos
 {
-   public class ExcluirProduto : CasoDeUsoBase
+    public class ExcluirProduto : CasoDeUsoBase
     {
         private readonly IPersistenciaDoProduto persistenciaDoProduto;
 

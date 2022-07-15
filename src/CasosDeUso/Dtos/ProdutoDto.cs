@@ -1,19 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Adaptadores.Dtos
+namespace CasosDeUso.Dtos
 {
-    public class EditarProdutoDto
+    public class ProdutoDto
     {
         [Required(ErrorMessage = "Campo {0} é obrigatório")]
-        public int ProdutoId { get;  set; }
+        public string Nome { get; set; }
 
         [Required(ErrorMessage = "Campo {0} é obrigatório")]
-        public string Nome { get;  set; }
+        public string Codigo { get; set; }
 
         [Required(ErrorMessage = "Campo {0} é obrigatório")]
-        public decimal Preco { get;  set; }
+        public decimal Preco { get; set; }
 
         [Required(ErrorMessage = "Campo {0} é obrigatório")]
-        public int Estoque { get;  set; }
+        public int Quantidade { get; set; }
     }
 }

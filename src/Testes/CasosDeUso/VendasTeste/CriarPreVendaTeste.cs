@@ -1,7 +1,7 @@
-﻿using Adaptadores.Dtos;
-using Adaptadores.Interfaces;
+﻿using CasosDeUso.Dtos;
 using CasosDeUso.Vendas;
 using Dominio;
+using Dominio.Interfaces;
 using Moq;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,18 +19,20 @@ namespace Testes.CasosDeUso.VendasTeste
             //Arrange
             var documento = "8";
             var codigo = "10";
-            var (persistenciaDoCliente, cliente) = PersistenciaDoClienteBuscarDocumentoMock(documento);
-            var (persistenciaDoProduto, produto) = PersistenciaDoProdutoBuscarPorCodigoMock(codigo);
+            var persistenciaDoCliente = PersistenciaDoClienteBuscarDocumentoMock(documento);
+
+            var persistenciaDoProduto = PersistenciaDoProdutoBuscarPorCodigoMock(codigo);
+            var produto = await persistenciaDoProduto.Object.BuscarPorCodigo(codigo);
             var persistenciaDaPreVenda = new Mock<IPersistenciaDaPreVenda>();
 
             var itemDaPreVendaDto = new ItemPreVendaDto { CodigoDoProduto = codigo, Quantidade = 5 };
             var itens = new List<ItemPreVendaDto> { itemDaPreVendaDto };
-            var preVendaDto = new PreVendaDto { DocumentoDoCliente = cliente.Documento, Itens = itens };
+            var preVendaDto = new PreVendaDto { DocumentoDoCliente = documento, Itens = itens };
 
             var criarPreVenda = new CriarPreVenda(persistenciaDaPreVenda.Object, persistenciaDoProduto.Object, persistenciaDoCliente.Object);
 
             //Action
-            await criarPreVenda.Executar(preVendaDto, cliente.Documento);
+            await criarPreVenda.Executar(preVendaDto);
 
             //Assert
             persistenciaDaPreVenda.Verify(x => x.Criar(It.IsAny<PreVenda>()), Times.Once());
@@ -40,22 +42,24 @@ namespace Testes.CasosDeUso.VendasTeste
         public async Task DeveAtualizarEstoqueAoAdicionarItemNaPreVenda()
         {
             //Arrange
-            var estoque = 15;
+            var estoque = 95;
             var documento = "6";
             var codigo = "10";
 
-            var (persistenciaDoProduto, produto) = PersistenciaDoProdutoBuscarPorCodigoMock(codigo);
-            var (persistenciaDoCliente, cliente) = PersistenciaDoClienteBuscarDocumentoMock(documento);
+            var persistenciaDoProduto = PersistenciaDoProdutoBuscarPorCodigoMock(codigo);
+            var produto = await persistenciaDoProduto.Object.BuscarPorCodigo(codigo);
+
+            var persistenciaDoCliente = PersistenciaDoClienteBuscarDocumentoMock(documento);
             var persistenciaDaPreVenda = new Mock<IPersistenciaDaPreVenda>();
 
             var itemDaPreVendaDto = new ItemPreVendaDto { CodigoDoProduto = codigo, Quantidade = 5 };
             var itens = new List<ItemPreVendaDto> { itemDaPreVendaDto };
-            var preVendaDto = new PreVendaDto { DocumentoDoCliente = cliente.Documento, Itens = itens };
+            var preVendaDto = new PreVendaDto { DocumentoDoCliente = documento, Itens = itens };
 
             var criarPreVenda = new CriarPreVenda(persistenciaDaPreVenda.Object, persistenciaDoProduto.Object, persistenciaDoCliente.Object);
 
             //Action
-            await criarPreVenda.Executar(preVendaDto, cliente.Documento);
+            await criarPreVenda.Executar(preVendaDto);
 
             //Assert
             Assert.Equal(estoque, produto.Estoque);
@@ -66,21 +70,23 @@ namespace Testes.CasosDeUso.VendasTeste
         {
             //Arrange
             var documento = "6";
-            var codigo = "7";
-            var (persistenciaDoCliente, cliente) = PersistenciaDoClienteBuscarDocumentoMock(documento);
-            var (persistenciaDoProduto, produto) = PersistenciaDoProdutoBuscarPorCodigoMock(codigo);
+            var codigo = "10";
+            var persistenciaDoCliente = PersistenciaDoClienteBuscarDocumentoMock(documento);
+            var persistenciaDoProduto = PersistenciaDoProdutoBuscarPorCodigoMock(codigo);
+            var produto = await persistenciaDoProduto.Object.BuscarPorCodigo(codigo);
+
             var persistenciaDaPreVenda = new Mock<IPersistenciaDaPreVenda>();
 
-            var itemDaPreVendaDto = new ItemPreVendaDto { CodigoDoProduto = produto.Codigo, Quantidade = 50 };
+            var itemDaPreVendaDto = new ItemPreVendaDto { CodigoDoProduto = produto.Codigo, Quantidade =101 };
 
             var itens = new List<ItemPreVendaDto> { itemDaPreVendaDto };
 
-            var preVendaDto = new PreVendaDto { DocumentoDoCliente = cliente.Documento, Itens = itens };
+            var preVendaDto = new PreVendaDto { DocumentoDoCliente = documento, Itens = itens };
 
             var criarPreVenda = new CriarPreVenda(persistenciaDaPreVenda.Object, persistenciaDoProduto.Object, persistenciaDoCliente.Object);
 
             //Action
-            await criarPreVenda.Executar(preVendaDto, cliente.Documento);
+            await criarPreVenda.Executar(preVendaDto);
 
 
             //Assert

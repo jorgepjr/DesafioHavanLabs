@@ -1,6 +1,7 @@
 ﻿using CasosDeUso.Produtos;
 using System.Threading.Tasks;
 using Testes.Mocks;
+using WebApi.Extensions;
 using Xunit;
 
 namespace Testes.CasosDeUso.ProdutoTeste
@@ -13,7 +14,7 @@ namespace Testes.CasosDeUso.ProdutoTeste
 
             //Arrange
             var codigo = "9";
-            var persistenciaDoProduto = PersistenciaDoProdutoBuscarPorCodigoMock(codigo).PersistenciaMock;
+            var persistenciaDoProduto = PersistenciaDoProdutoBuscarPorCodigoMock(codigo);
             var buscarProdutoPorCodigo = new BuscarProdutoPorCodigo(persistenciaDoProduto.Object);
 
             //Action
@@ -27,17 +28,17 @@ namespace Testes.CasosDeUso.ProdutoTeste
         public async Task DeveRetornarErroCasoProdutoNaoEncontrado()
         {
             //Arrange
-            var codigo = "50";
-            var persistenciaDoProduto = PersistenciaDoProdutoBuscarPorCodigoMock(codigo).PersistenciaMock;
+            var codigo = "3000";
+            var persistenciaDoProduto = PersistenciaDoProdutoBuscarPorCodigoMock(codigo);
             var buscarProdutoPorCodigo = new BuscarProdutoPorCodigo(persistenciaDoProduto.Object);
 
             //Action
-            var produto = await buscarProdutoPorCodigo.Executar(codigo);
+            var resultado = await buscarProdutoPorCodigo.Executar(codigo);
 
             //Assert
-            Assert.True(buscarProdutoPorCodigo.PossuiErro);
-            Assert.Equal("Produto não encontrado!", buscarProdutoPorCodigo.MensagemDoErro);
-            Assert.Null(produto);
+            Assert.True(buscarProdutoPorCodigo.PossuiErro());
+            Assert.Equal("Produto não encontrado!", buscarProdutoPorCodigo.MensagemDeErro());
+            Assert.Null(resultado);
         }
     }
 }

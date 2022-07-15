@@ -1,5 +1,4 @@
 ﻿using CasosDeUso.Clientes;
-using CasosDeUso.Produtos;
 using Dominio;
 using Moq;
 using System.Threading.Tasks;
@@ -15,15 +14,15 @@ namespace Testes.CasosDeUso.ClienteTeste
         {
             //Arrange
             var atualizarClienteDto = ModelsMock.AtualizarClienteDtoMock;
-            var (persistenciaDoCliente, cliente) = PersistenciaDoClienteBuscarPorIdMock(atualizarClienteDto.ClienteId);
+            var persistenciaDoCliente = PersistenciaDoClienteBuscarPorIdMock(atualizarClienteDto.ClienteId);
 
-            var atualizarCliente = new AtualizarCliente(persistenciaDoCliente.Object);
+            var atualizarCliente = new CadastroDoCliente(persistenciaDoCliente.Object);
 
             //Action
-            await atualizarCliente.Executar(atualizarClienteDto);
+            await atualizarCliente.Atualizar(atualizarClienteDto);
 
             //Assert
-            persistenciaDoCliente.Verify(x => x.Atualizar(cliente), Times.Once());
+            persistenciaDoCliente.Verify(x => x.Atualizar(It.IsAny<Cliente>()), Times.Once());
         }
     }
 }

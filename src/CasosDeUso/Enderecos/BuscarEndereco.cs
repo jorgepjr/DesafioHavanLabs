@@ -1,5 +1,5 @@
-﻿using Adaptadores.Dtos;
-using Adaptadores.Interfaces;
+﻿using CasosDeUso.ClientApi;
+using CasosDeUso.Dtos;
 using Refit;
 using System.Threading.Tasks;
 
@@ -28,7 +28,7 @@ namespace CasosDeUso.Enderecos
                     return null;
                 }
             }
-            catch (ApiException ex)
+            catch (ApiException)
             {
                 Erros.Add("BadRequest", "Cep inválido!");
                 return null;

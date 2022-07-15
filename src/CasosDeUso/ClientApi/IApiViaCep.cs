@@ -1,8 +1,8 @@
-using Adaptadores.Dtos;
+using CasosDeUso.Dtos;
 using Refit;
 using System.Threading.Tasks;
 
-namespace Adaptadores.Interfaces
+namespace CasosDeUso.ClientApi
 {
     public interface IApiViaCep
     {
