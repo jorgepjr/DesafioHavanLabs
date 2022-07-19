@@ -19,10 +19,10 @@ namespace Testes
             preVenda.AdicionarItem(produto, quantidade, produto.Preco);
 
             //Action
-            var vendaDto = PreVendaFactory.Criar("88896655544", preVenda);
+            var vendaDto = PreVendaFactory.Criar(cliente, preVenda);
 
             //Assert
-            Assert.Equal("88896655544", vendaDto.Cliente);
+            Assert.Equal("Joao", vendaDto.Cliente);
             Assert.Equal("123", vendaDto.Itens[0].CodigoDoProduto);
             Assert.Equal(30.00m, vendaDto.Itens[0].PrecoUnitario);
             Assert.Equal(2, vendaDto.Itens[0].Quantidade);

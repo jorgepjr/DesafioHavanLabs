@@ -37,7 +37,7 @@ namespace WebApi.Controllers
                 return BadRequest(criarPreVenda.MensagemDoErro);
             }
 
-            var vendaDto = PreVendaFactory.Criar(preVenda.Cliente.Nome, preVenda);
+            var vendaDto = PreVendaFactory.Criar(preVenda.Cliente, preVenda);
 
             return Ok(vendaDto);
         }

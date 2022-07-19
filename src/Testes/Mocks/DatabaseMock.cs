@@ -68,8 +68,8 @@ namespace Testes.Mocks
         protected void CadastrarClienteMock()
         {
             var clienteFake = new Faker<Cliente>("pt_BR")
-               .CustomInstantiator(x => new Cliente(x.Name.FullName(), x.Random.Int(1, 10).ToString(), x.Address.StreetAddress()))
-               .Generate(10);
+               .CustomInstantiator(x => new Cliente(x.Name.FullName(), "84305266253", "76806-534"))
+               .Generate(1);
 
             contextoMock.Clientes.AddRange(clienteFake);
             contextoMock.SaveChanges();

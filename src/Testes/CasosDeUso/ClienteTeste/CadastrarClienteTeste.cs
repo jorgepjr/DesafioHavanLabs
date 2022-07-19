@@ -10,7 +10,7 @@ namespace Testes.CasosDeUso.ClienteTeste
 {
     public class CadastrarClienteTeste
     {
-        ClienteDto clienteDto = new ClienteDto { Cep = "76806534", Nome = "Joao", Documento = "87755566644" };
+        ClienteDto clienteDto = new ClienteDto { Cep = "76806-534", Nome = "Joao", Documento = "87755566644" };
 
         [Fact]
         public async Task DeveCadastrarCliente()

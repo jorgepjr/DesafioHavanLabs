@@ -27,6 +27,7 @@ namespace CasosDeUso.Vendas
             if (cliente is null)
             {
                 Erros.Add("Erro", "Cliente nao encontrado!");
+                return null;
             }
 
             var preVenda = new PreVenda(cliente);
@@ -49,7 +50,8 @@ namespace CasosDeUso.Vendas
                 catch (Exception ex)
                 {
 
-                    Erros.Add("Erro", ex.Message); ;
+                    Erros.Add("Erro", ex.Message);
+                    return null;
                 }
             }
 

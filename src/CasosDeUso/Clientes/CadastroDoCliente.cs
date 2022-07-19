@@ -18,7 +18,18 @@ namespace CasosDeUso.Clientes
 
         public async Task Registrar(ClienteDto clienteDto)
         {
-            var cliente = new Cliente(clienteDto.Nome, clienteDto.Documento, clienteDto.Cep);
+            Cliente cliente;
+
+            try
+            {
+                cliente = new Cliente(clienteDto.Nome, clienteDto.Documento, clienteDto.Cep);
+            }
+
+            catch (Exception ex)
+            {
+                Erros.Add("", ex.Message);
+                return;
+            }
 
             var jaPossuiCadastro = await persistenciaDoCliente.DoumentoJaCadastrado(clienteDto.Documento);
 
@@ -27,7 +38,7 @@ namespace CasosDeUso.Clientes
                 Erros.Add("Erro", $"Documento nª: {clienteDto.Documento} já cadastrado!");
                 return;
             }
-
+            
             await persistenciaDoCliente.Salvar(cliente);
         }
 

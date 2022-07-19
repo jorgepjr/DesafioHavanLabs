@@ -7,13 +7,13 @@ namespace WebApi.Factories
 {
     public static class PreVendaFactory
     {
-        public static VendaDto Criar(string cliente, PreVenda preVenda)
+        public static VendaDto Criar(Cliente cliente, PreVenda preVenda)
         {
             var itens = ListaDeItens(preVenda.Itens);
 
             return new VendaDto
             {
-                Cliente = cliente,
+                Cliente = cliente.Nome,
                 Itens = itens,
                 Total = preVenda.CalcularTotal
             };

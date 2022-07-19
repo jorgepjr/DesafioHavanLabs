@@ -17,5 +17,6 @@
         public int Quantidade { get; private set; }
         public decimal PrecoUnitario { get; private set; }
         public Produto Produto { get; private set; }
+        public PreVenda PreVenda { get; private set; }
     }
 }

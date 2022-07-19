@@ -17,7 +17,7 @@ namespace Testes.CasosDeUso.VendasTeste
         public async Task DeveCriarUmaPreVenda()
         {
             //Arrange
-            var documento = "8";
+            var documento = "84305266253";
             var codigo = "10";
             var persistenciaDoCliente = PersistenciaDoClienteBuscarDocumentoMock(documento);
 
@@ -43,7 +43,7 @@ namespace Testes.CasosDeUso.VendasTeste
         {
             //Arrange
             var estoque = 95;
-            var documento = "6";
+            var documento = "84305266253";
             var codigo = "10";
 
             var persistenciaDoProduto = PersistenciaDoProdutoBuscarPorCodigoMock(codigo);
@@ -69,7 +69,7 @@ namespace Testes.CasosDeUso.VendasTeste
         public async Task DeveRetornarErroCasoEstoqueTenhaAcabado()
         {
             //Arrange
-            var documento = "6";
+            var documento = "84305266253";
             var codigo = "10";
             var persistenciaDoCliente = PersistenciaDoClienteBuscarDocumentoMock(documento);
             var persistenciaDoProduto = PersistenciaDoProdutoBuscarPorCodigoMock(codigo);
